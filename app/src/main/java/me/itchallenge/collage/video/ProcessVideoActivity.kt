@@ -2,11 +2,14 @@ package me.itchallenge.collage.video
 
 import android.content.Context
 import android.hardware.Camera
+import android.media.MediaRecorder
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.FrameLayout
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_video_process.*
 import me.itchallenge.collage.R
+import me.itchallenge.collage.settings.SettingsDataSource
 
 
 @Suppress("DEPRECATION")
@@ -21,7 +24,16 @@ class ProcessVideoActivity : AppCompatActivity(), ProcessVideoView {
         presenter = ProcessVideoPresenter(this,
                 PrepareCameraInteractor(),
                 ReleaseCameraInteractor(),
-                windowManager)
+                StartCapturingVideoInteractor(),
+                StopCapturingVideoInteractor(),
+                SplitVideoToFramesInteractor(),
+                SaveFramesInteractor(),
+                windowManager,
+                MediaRecorder(),
+                SettingsDataSource(applicationContext))
+
+        start_recording.setOnClickListener { presenter.onStartRecordingClicked() }
+        stop_recording.setOnClickListener { presenter.onStopRecordingClicked() }
 
         presenter.onStart()
     }
@@ -35,6 +47,7 @@ class ProcessVideoActivity : AppCompatActivity(), ProcessVideoView {
     }
 
     override fun showCameraPreview(camera: Camera) {
+        this.camera = camera
         val preview = findViewById<FrameLayout>(R.id.camera_preview)
         if (preview.childCount == 0) {
             val cameraPreview = CameraPreview(this, camera)
