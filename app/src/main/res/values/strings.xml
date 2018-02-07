@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Collage</string>
+    <string name="error_camera_init">Camera initialization error</string>
 </resources>
