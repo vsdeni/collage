@@ -1,0 +1,16 @@
+1. ProcessVideoActivity - records video, has only 1 button for starting/finishing video recording
+- Show preview
+- Start recording
+- Stop recording
+- Save images for collage (don't save video)
+
+2. CollageCompositionActivity - allows to select pattern of collage, and set filters
+- Get images and show preview of collage with default pattern
+- Pattern can be changed by selecting from list, and preview changes appropriately
+- Each image in collage can be selected by checkbox for applying a filter
+- After applying a filter preview is changed
+- When all possible adjusting are performed user presses button "finish" and navigates to the final image
+
+3. CollagePreviewActivity - shows result of work on previous steps
+- Preview of the final image
+- The final image can be shared
