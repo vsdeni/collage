@@ -7,4 +7,6 @@ interface BaseView {
     fun hideLoader()
 
     fun showMessage(message: String)
+
+    fun navigateNext()
 }

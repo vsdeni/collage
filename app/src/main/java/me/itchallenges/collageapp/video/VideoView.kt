@@ -11,7 +11,5 @@ interface VideoView : BaseView {
 
     fun showCameraPreview(camera: Camera)
 
-    fun navigateToNextScreen()
-
     fun context(): Context
 }

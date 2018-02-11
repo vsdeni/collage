@@ -7,7 +7,7 @@ import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Single
 
 @Suppress("DEPRECATION")
-class PrepareCameraInteractor : UseCase.RxSingle<Camera, PrepareCameraInteractor.Params>() {
+class PreviewCameraInteractor : UseCase.RxSingle<Camera, PreviewCameraInteractor.Params>() {
 
     override fun build(params: Params?): Single<Camera> {
         return Single.fromCallable({

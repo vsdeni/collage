@@ -1,10 +1,13 @@
 package me.itchallenges.collageapp.pattern
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
@@ -15,11 +18,24 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.gson.Gson
 import com.urancompany.indoorapp.executor.ThreadScheduler
 import me.itchallenges.collageapp.R
+import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
-import me.itchallenges.collageapp.frame.FramesDataSource
 import me.itchallenges.collageapp.settings.SettingsDataSource
 
 class PatternActivity : AppCompatActivity(), PatternView {
+
+    override fun showLoader() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideLoader() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showMessage(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private lateinit var patternsView: RecyclerView
     private lateinit var collageView: CollageLayout
 
@@ -46,7 +62,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
 
         presenter = PatternPresenter(this,
                 GetPatternsInteractor(PatternDataSource(this, Gson()), ThreadScheduler()),
-                GetFramesInteractor(FramesDataSource(), SettingsDataSource(this), ThreadScheduler()))
+                GetImagesInteractor(CollageDataSource(), SettingsDataSource(this), ThreadScheduler()))
         presenter.loadPatterns()
     }
 
@@ -66,6 +82,22 @@ class PatternActivity : AppCompatActivity(), PatternView {
                     .map { createCollageCellView(frames[it], pattern.positions[it]) }
                     .forEach { collageView.addView(it) }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.pattern_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_next -> presenter.onNavigateNextClicked()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun navigateNext() {
+        startActivity(Intent(this, PatternActivity::class.java))
     }
 
     private fun createCollageCellView(frame: Bitmap, position: Position): View {
