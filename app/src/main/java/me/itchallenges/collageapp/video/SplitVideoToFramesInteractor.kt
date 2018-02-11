@@ -16,7 +16,7 @@ class SplitVideoToFramesInteractor : UseCase.RxObservable<Bitmap, SplitVideoToFr
                 retriever.setDataSource(params.videoFile.path)
                 val dur = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
                 val duration: Int = Integer.parseInt(dur) / 1000
-                for (second: Int in 1 until duration) {
+                for (second: Int in 1 until 6) {//TODO
                     emitter.onNext(retriever.getFrameAtTime(second.toLong(), MediaMetadataRetriever.OPTION_CLOSEST))
                 }
                 emitter.onComplete()

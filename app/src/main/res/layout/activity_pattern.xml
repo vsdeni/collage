@@ -4,26 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+    <me.itchallenges.collageapp.collage.CollageLayout
+        android:id="@+id/collage_preview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="48dp"
-        app:cardElevation="3dp">
-
-        <me.itchallenges.collageapp.collage.CollageLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:columns="10"
-            app:spacing="1dp" />
-
-    </android.support.v7.widget.CardView>
+        app:columns="10"
+        app:spacing="1dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/patterns_picker"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_alignParentBottom="true"
+        android:layout_below="@id/collage_preview"
+        android:layout_margin="1dp"
         android:background="#BB000000" />
 
 </RelativeLayout>

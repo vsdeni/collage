@@ -10,7 +10,13 @@ import android.widget.TextView
 import me.itchallenges.collageapp.R
 
 
-class PatternsAdapter(private val context: Context, private val patterns: Array<Pattern>) : RecyclerView.Adapter<PatternsAdapter.PatternViewHolder>() {
+class PatternsAdapter(private val context: Context, private var patterns: Array<Pattern>?) : RecyclerView.Adapter<PatternsAdapter.PatternViewHolder>() {
+
+    constructor(context: Context) : this(context, null)
+
+    fun setData(data: Array<Pattern>) {
+        patterns = data
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PatternViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -18,16 +24,16 @@ class PatternsAdapter(private val context: Context, private val patterns: Array<
         return PatternViewHolder(view)
     }
 
-    private fun getPattern(position: Int): Pattern = patterns[position]
+    fun getPattern(position: Int): Pattern = patterns!![position]
 
     override fun getItemViewType(position: Int): Int {
         return position
     }
 
-    override fun getItemCount(): Int = patterns.size
+    override fun getItemCount(): Int = patterns?.size ?: 0
 
     override fun onBindViewHolder(holder: PatternViewHolder?, position: Int) {
-        val pattern = patterns[position]
+        val pattern = patterns!![position]
         holder?.preview?.setImageBitmap(pattern.preview)
         holder?.title?.text = pattern.name
     }

@@ -1,6 +1,7 @@
 package me.itchallenges.collageapp.video
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Camera
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -9,7 +10,9 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_video.*
 import me.itchallenges.collageapp.R
+import me.itchallenges.collageapp.pattern.PatternActivity
 import me.itchallenges.collageapp.settings.SettingsDataSource
+import java.io.File
 
 
 @Suppress("DEPRECATION")
@@ -35,7 +38,13 @@ class VideoActivity : AppCompatActivity(), VideoView {
         start_recording.setOnClickListener { presenter.onStartRecordingClicked() }
         stop_recording.setOnClickListener { presenter.onStopRecordingClicked() }
 
-        presenter.onStart()
+        val file = File(filesDir, "frames/")
+        if (file.exists() && file.list().size == 5) {//TODO
+            startActivity(Intent(this, PatternActivity::class.java))
+            finish()
+        } else {
+            presenter.onStart()
+        }
     }
 
     override fun getPreviewCamera(): Camera? =

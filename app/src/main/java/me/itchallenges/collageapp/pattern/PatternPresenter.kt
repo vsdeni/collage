@@ -1,16 +1,24 @@
 package me.itchallenges.collageapp.pattern
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
-
-class PatternPresenter(private val view: PatternView, private val patternRepository: PatternRepository) {
+class PatternPresenter(private val view: PatternView,
+                       private val getPatternsInteractor: GetPatternsInteractor,
+                       private val getFramesInteractor: GetFramesInteractor) {
 
     fun loadPatterns() {
-        patternRepository.getPatterns()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ patterns -> view.showPatternsPicker(patterns, null) })
+        getPatternsInteractor
+                .execute({ patterns -> view.showPatternsPicker(patterns, null) },
+                        { it.printStackTrace() })
+    }
+
+    private fun loadFrames() {
+        getFramesInteractor
+                .execute({ list -> view.showPatternPreview(view.getSelectedPattern(), list) },
+                        { it.printStackTrace() })
+    }
+
+    fun onPatternChanged() {
+        loadFrames()
     }
 
 }

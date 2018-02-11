@@ -4,11 +4,10 @@ import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class ThreadScheduler
-constructor() : ExecutionScheduler {
+class ThreadScheduler : ExecutionScheduler {
     companion object {
-        internal const val HIGH_PRIORITY_THREADS = 6
-        internal const val LOW_PRIORITY_THREADS = 2
+        private const val HIGH_PRIORITY_THREADS = 6
+        private const val LOW_PRIORITY_THREADS = 2
 
         internal val highPriorityScheduler: Scheduler
         internal val lowPriorityScheduler: Scheduler
