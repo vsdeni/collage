@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.itchallenge.collage">
+    package="me.itchallenges.collageapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
@@ -15,9 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".video.ProcessVideoActivity"></activity>
+        <activity android:name="me.itchallenges.collageapp.video.VideoActivity"></activity>
 
-        <activity android:name=".pattern.CollageCompositionActivity">
+        <activity android:name="me.itchallenges.collageapp.pattern.PatternActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
