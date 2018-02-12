@@ -3,7 +3,8 @@ package me.itchallenges.collageapp.pattern
 
 class PatternPresenter(private val view: PatternView,
                        private val getPatternsInteractor: GetPatternsInteractor,
-                       private val getImagesInteractor: GetImagesInteractor) {
+                       private val getImagesInteractor: GetImagesInteractor,
+                       private val saveSelectedPatternInteractor: SaveSelectedPatternInteractor) {
 
     fun loadPatterns() {
         getPatternsInteractor
@@ -13,7 +14,7 @@ class PatternPresenter(private val view: PatternView,
 
     private fun loadFrames() {
         getImagesInteractor
-                .execute({ list -> view.showPatternPreview(view.getSelectedPattern(), list) },
+                .execute({ list -> view.showCollagePreview(view.getSelectedPattern(), list) },
                         { it.printStackTrace() })
     }
 
@@ -21,8 +22,13 @@ class PatternPresenter(private val view: PatternView,
         loadFrames()
     }
 
-    fun onNavigateNextClicked(){
-        view
+    fun onNavigateNextClicked() {
+        saveSelectedPatternInteractor
+                .execute({
+                    view.navigateNext()
+                }, {
+                    it.printStackTrace()
+                }, SaveSelectedPatternInteractor.Params(view.getSelectedPattern()))
     }
 
 }

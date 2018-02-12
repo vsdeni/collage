@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.Toast
+import com.google.gson.Gson
 import com.urancompany.indoorapp.executor.ThreadScheduler
 import kotlinx.android.synthetic.main.activity_video.*
 import me.itchallenges.collageapp.R
@@ -31,7 +32,8 @@ class VideoActivity : AppCompatActivity(), VideoView {
                 PreviewCameraInteractor(),
                 ReleaseCameraInteractor(),
                 StartCapturingVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
-                StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(), ThreadScheduler()),
+                StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
                 windowManager,
                 MediaRecorder())
 

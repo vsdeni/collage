@@ -1,7 +1,9 @@
 package me.itchallenges.collageapp.collage
 
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -13,15 +15,18 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-class CollageDataSource : CollageRepository {
+class CollageDataSource(private val sharedPreferences: SharedPreferences,
+                        private val gson: Gson) : CollageRepository {
 
-    override fun savePattern(pattern: Pattern): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun savePattern(pattern: Pattern): Completable =
+            Completable.fromCallable({
+                sharedPreferences.edit().putString(patternKey, gson.toJson(pattern)).apply()
+            })
 
-    override fun getPattern(): Single<Pattern> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getPattern(): Single<Pattern> =
+            Single.fromCallable<Pattern>({
+                gson.fromJson(sharedPreferences.getString(patternKey, ""), Pattern::class.java)
+            })
 
     override fun saveImages(images: List<Bitmap>, dir: File): Completable {
         return Completable.fromCallable({
@@ -38,13 +43,20 @@ class CollageDataSource : CollageRepository {
         })
     }
 
-    override fun saveFilter(index: Int, filter: Filter): Maybe<Filter> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun saveFrameFilter(indexes: IntArray, filter: Filter): Completable =
+            Completable.fromCallable({
+                indexes
+                        .forEach { sharedPreferences.edit().putString(filterKey + it, gson.toJson(filter)).apply() }
+            })
 
-    override fun getFilter(index: Int): Filter {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getFrameFilter(indexes: IntArray): Observable<Filter> =
+            Observable.create({ emitter ->
+                indexes
+                        .filter { sharedPreferences.contains(filterKey + it) }
+                        .forEach { emitter.onNext(gson.fromJson(sharedPreferences.getString(filterKey + it, ""), Filter::class.java)) }
+                emitter.onComplete()
+            })
+
 
     override fun getImages(dir: File): Observable<Bitmap> {
         return Observable.create<Bitmap>({ emitter ->
@@ -56,7 +68,23 @@ class CollageDataSource : CollageRepository {
         })
     }
 
+    override fun saveGlobalFilter(filter: Filter): Completable =
+            Completable.fromCallable({
+                sharedPreferences.edit().putString(filterKey, gson.toJson(filter)).apply()
+            })
+
+    override fun getGlobalFilter(): Maybe<Filter> =
+            Maybe.create({ emitter ->
+                if (sharedPreferences.contains(filterKey)) {
+                    emitter.onSuccess(gson.fromJson(sharedPreferences.getString(filterKey, ""), Filter::class.java))
+                }
+                emitter.onComplete()
+            })
+
     private fun bitmapFromFile(file: File): Bitmap {
         return BitmapFactory.decodeFile(file.absolutePath)
     }
 }
+
+private const val patternKey = "pattern"
+private const val filterKey = "filter"

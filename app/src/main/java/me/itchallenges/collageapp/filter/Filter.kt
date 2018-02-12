@@ -1,5 +1,4 @@
 package me.itchallenges.collageapp.filter
 
 
-class Filter {
-}
+data class Filter(val name: String, val effect: String?)

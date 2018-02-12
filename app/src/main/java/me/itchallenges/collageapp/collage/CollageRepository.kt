@@ -15,11 +15,15 @@ interface CollageRepository {
 
     fun getPattern(): Single<Pattern>
 
-    fun getImages(dir: File): Observable<Bitmap>
-
     fun saveImages(images: List<Bitmap>, dir: File): Completable
 
-    fun saveFilter(index: Int, filter: Filter): Maybe<Filter>
+    fun getImages(dir: File): Observable<Bitmap>
 
-    fun getFilter(index: Int): Filter
+    fun saveFrameFilter(indexes: IntArray, filter: Filter): Completable
+
+    fun getFrameFilter(indexes: IntArray): Observable<Filter>
+
+    fun saveGlobalFilter(filter: Filter): Completable
+
+    fun getGlobalFilter(): Maybe<Filter>
 }

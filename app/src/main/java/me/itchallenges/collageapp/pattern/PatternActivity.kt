@@ -1,5 +1,6 @@
 package me.itchallenges.collageapp.pattern
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -20,22 +21,10 @@ import com.urancompany.indoorapp.executor.ThreadScheduler
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
+import me.itchallenges.collageapp.filter.FilterActivity
 import me.itchallenges.collageapp.settings.SettingsDataSource
 
 class PatternActivity : AppCompatActivity(), PatternView {
-
-    override fun showLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun hideLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showMessage(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private lateinit var patternsView: RecyclerView
     private lateinit var collageView: CollageLayout
 
@@ -62,8 +51,23 @@ class PatternActivity : AppCompatActivity(), PatternView {
 
         presenter = PatternPresenter(this,
                 GetPatternsInteractor(PatternDataSource(this, Gson()), ThreadScheduler()),
-                GetImagesInteractor(CollageDataSource(), SettingsDataSource(this), ThreadScheduler()))
+                GetImagesInteractor(CollageDataSource(getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), SettingsDataSource(this), ThreadScheduler()),
+                SaveSelectedPatternInteractor(CollageDataSource(getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()))
         presenter.loadPatterns()
+    }
+
+    override fun showLoader() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideLoader() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showMessage(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showPatternsPicker(patterns: Array<Pattern>, active: Pattern?) {
@@ -71,17 +75,15 @@ class PatternActivity : AppCompatActivity(), PatternView {
         patternsView.adapter = patternsAdapter
     }
 
-    override fun getSelectedPattern(): Pattern? {
-        return patternsAdapter?.getPattern(patternsView.tag as Int)
+    override fun getSelectedPattern(): Pattern {
+        return patternsAdapter?.getPattern(patternsView.tag as Int)!!
     }
 
-    override fun showPatternPreview(pattern: Pattern?, frames: List<Bitmap>) {
-        pattern?.let {
-            collageView.removeAllViews()
-            (0 until frames.size)
-                    .map { createCollageCellView(frames[it], pattern.positions[it]) }
-                    .forEach { collageView.addView(it) }
-        }
+    override fun showCollagePreview(pattern: Pattern, frames: List<Bitmap>) {
+        collageView.removeAllViews()
+        (0 until frames.size)
+                .map { createCollageCellView(frames[it], pattern.positions[it]) }
+                .forEach { collageView.addView(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -97,7 +99,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
     }
 
     override fun navigateNext() {
-        startActivity(Intent(this, PatternActivity::class.java))
+        startActivity(Intent(this, FilterActivity::class.java))
     }
 
     private fun createCollageCellView(frame: Bitmap, position: Position): View {

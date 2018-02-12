@@ -24,6 +24,7 @@
         </activity>
 
         <activity android:name=".pattern.PatternActivity" />
+        <activity android:name=".filter.FilterActivity" />
     </application>
 
 </manifest>

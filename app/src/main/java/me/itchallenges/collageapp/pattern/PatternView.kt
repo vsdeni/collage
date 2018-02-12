@@ -7,7 +7,7 @@ import me.itchallenges.collageapp.BaseView
 interface PatternView : BaseView {
     fun showPatternsPicker(patterns: Array<Pattern>, active: Pattern?)
 
-    fun getSelectedPattern(): Pattern?
+    fun getSelectedPattern(): Pattern
 
-    fun showPatternPreview(pattern: Pattern?, frames: List<Bitmap>)
+    fun showCollagePreview(pattern: Pattern, frames: List<Bitmap>)
 }

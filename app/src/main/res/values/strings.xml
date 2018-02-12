@@ -3,4 +3,5 @@
     <string name="error_camera_init">Camera initialization error</string>
     <string name="menu_pattern_next">Next</string>
     <string name="menu_video_next">Next</string>
+    <string name="preference_file_key">collage.prefs</string>
 </resources>
