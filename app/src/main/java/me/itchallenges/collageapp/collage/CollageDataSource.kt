@@ -28,7 +28,7 @@ class CollageDataSource(private val sharedPreferences: SharedPreferences,
                 gson.fromJson(sharedPreferences.getString(patternKey, ""), Pattern::class.java)
             })
 
-    override fun saveImages(images: List<Bitmap>, dir: File): Completable {
+    override fun saveFrames(images: List<Bitmap>, dir: File): Completable {
         return Completable.fromCallable({
             dir.deleteRecursively()
             dir.mkdirs()
@@ -40,6 +40,15 @@ class CollageDataSource(private val sharedPreferences: SharedPreferences,
                 fos.flush()
                 fos.close()
             }
+        })
+    }
+
+    override fun getFrames(dir: File): Observable<File> {
+        return Observable.create<File>({ emitter ->
+            dir.list()
+                    .forEach { emitter.onNext(File(dir, it)) }
+
+            emitter.onComplete()
         })
     }
 
@@ -56,17 +65,6 @@ class CollageDataSource(private val sharedPreferences: SharedPreferences,
                         .forEach { emitter.onNext(gson.fromJson(sharedPreferences.getString(filterKey + it, ""), Filter::class.java)) }
                 emitter.onComplete()
             })
-
-
-    override fun getImages(dir: File): Observable<Bitmap> {
-        return Observable.create<Bitmap>({ emitter ->
-            dir.list()
-                    .map { bitmapFromFile(File(dir, it)) }
-                    .forEach { emitter.onNext(it) }
-
-            emitter.onComplete()
-        })
-    }
 
     override fun saveGlobalFilter(filter: Filter): Completable =
             Completable.fromCallable({

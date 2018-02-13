@@ -58,7 +58,7 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
 
     private fun saveFrames(frames: List<Bitmap>, dir: File): Completable =
             collageRepository
-                    .saveImages(frames, dir)
+                    .saveFrames(frames, dir)
 
     data class Params(val mediaRecorder: MediaRecorder)
 }

@@ -1,30 +1,30 @@
-package me.itchallenges.collageapp.filter
+package me.itchallenges.collageapp.collage
 
-import android.graphics.Bitmap
 import com.urancompany.indoorapp.executor.ExecutionScheduler
 import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Observable
 import io.reactivex.Single
-import me.itchallenges.collageapp.collage.CollageRepository
+import me.itchallenges.collageapp.filter.Filter
 import me.itchallenges.collageapp.settings.SettingsRepository
+import java.io.File
 
 
-class GetCollageInteractor(private val settingsRepository: SettingsRepository,
-                           private val collageRepository: CollageRepository,
-                           private val scheduler: ExecutionScheduler) : UseCase.RxSingle<CollageFilterViewModel, UseCase.None>() {
+class GetFinalCollageInteractor(private val settingsRepository: SettingsRepository,
+                                private val collageRepository: CollageRepository,
+                                private val scheduler: ExecutionScheduler) : UseCase.RxSingle<CollageFinalViewModel, UseCase.None>() {
 
-    override fun build(params: None?): Single<CollageFilterViewModel> {
+    override fun build(params: None?): Single<CollageFinalViewModel> {
         return settingsRepository.getDirToSaveFrames()
                 .flatMap({
                     collageRepository
-                            .getImages(it)
+                            .getFrames(it)
                             .toList()
                 })
                 .flatMap({ frames ->
                     collageRepository
                             .getGlobalFilter()
-                            .switchIfEmpty(Single.just(Filter("No Filter", null)))//TODO
-                            .map { filter -> Pair<List<Bitmap>, Filter>(frames, filter) }
+                            .switchIfEmpty(Single.just(Filter.NONE))
+                            .map { filter -> Pair<List<File>, Filter>(frames, filter) }
                 })
                 .flatMap({ pair ->
                     Observable
@@ -40,7 +40,7 @@ class GetCollageInteractor(private val settingsRepository: SettingsRepository,
                     collageRepository
                             .getPattern()
                             .map { pattern ->
-                                CollageFilterViewModel(pair.first,
+                                CollageFinalViewModel(pair.first,
                                         pair.second.globalFilter,
                                         pair.second.frameFilters,
                                         pattern)

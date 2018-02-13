@@ -6,9 +6,13 @@ import me.itchallenges.collageapp.BaseView
 interface FilterView : BaseView {
     fun showFiltersPicker(filters: List<Filter>, active: Filter?)
 
+    fun getCheckedCells(): BooleanArray
+
+    fun getAppliedFilters(): Array<Filter>
+
     fun getSelectedFilter(): Filter
 
-    fun getSelectedImages(): List<Int>
-
-    fun showCollagePreview(collageFilterViewModel: CollageFilterViewModel)
+    fun showCollagePreview(collage: CollageFilterViewModel,
+                           filters: Array<Filter>,
+                           checked: BooleanArray)
 }

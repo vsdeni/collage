@@ -4,4 +4,10 @@
     <string name="menu_pattern_next">Next</string>
     <string name="menu_video_next">Next</string>
     <string name="preference_file_key">collage.prefs</string>
+
+    <string name="filter_none">No Filter</string>
+    <string name="filter_toon">Toon</string>
+    <string name="filter_contrast">Contrast</string>
+    <string name="filter_sepia">Sepia</string>
+    <string name="filter_blur">Blur</string>
 </resources>

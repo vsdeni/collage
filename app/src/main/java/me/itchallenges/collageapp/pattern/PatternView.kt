@@ -1,7 +1,7 @@
 package me.itchallenges.collageapp.pattern
 
-import android.graphics.Bitmap
 import me.itchallenges.collageapp.BaseView
+import java.io.File
 
 
 interface PatternView : BaseView {
@@ -9,5 +9,5 @@ interface PatternView : BaseView {
 
     fun getSelectedPattern(): Pattern
 
-    fun showCollagePreview(pattern: Pattern, frames: List<Bitmap>)
+    fun showCollagePreview(pattern: Pattern, frames: List<File>)
 }

@@ -5,14 +5,14 @@
 
     <ImageView
         android:id="@+id/collage_image"
-        android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
 
     <CheckBox
-        style="@android:style/Widget.CompoundButton.RadioButton"
+        android:id="@+id/collage_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
+        android:layout_gravity="left|bottom"
         android:layout_margin="3dp" />
 </FrameLayout>

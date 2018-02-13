@@ -1,10 +1,8 @@
 package me.itchallenges.collageapp.filter
 
-import android.graphics.Bitmap
 import me.itchallenges.collageapp.pattern.Pattern
+import java.io.File
 
 
-data class CollageFilterViewModel(val frames: List<Bitmap>,
-                                  val globalFilter: Filter,
-                                  val frameFilters: List<Filter>,
+data class CollageFilterViewModel(val frames: List<File>,
                                   val pattern: Pattern)

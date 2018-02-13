@@ -1,7 +1,6 @@
 package me.itchallenges.collageapp.filter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,12 +33,21 @@ class FiltersAdapter(private val context: Context, private var filters: List<Fil
 
     override fun onBindViewHolder(holder: FilterViewHolder?, position: Int) {
         val filter = filters!![position]
-        holder?.preview?.setImageDrawable(getBitmap(filter))
-        holder?.title?.text = filter.name
+        holder?.preview?.let {
+            filter.apply(context, R.drawable.filter_placeholder, it)
+        }
+        holder?.title?.text = getName(filter)
     }
 
-    private fun getBitmap(filter: Filter): Drawable {
-        return context.resources.getDrawable(R.drawable.filter_placeholder)
+
+    private fun getName(filter: Filter): String {
+        return when (filter) {
+            Filter.NONE -> context.getString(R.string.filter_none)
+            Filter.BLUR -> context.getString(R.string.filter_blur)
+            Filter.SEPIA -> context.getString(R.string.filter_sepia)
+            Filter.TOON -> context.getString(R.string.filter_toon)
+            Filter.CONTRAST -> context.getString(R.string.filter_contrast)
+        }
     }
 
     class FilterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
