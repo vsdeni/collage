@@ -20,9 +20,11 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
                     .andThen(
                             settingsRepository
                                     .getFileToSaveVideo()
-                    )
-                    .flatMap({
-                        splitVideoToFrames(it, MediaMetadataRetriever())
+                    ).flatMap({ fileToSave ->
+                settingsRepository.getCollageImagesCount().map { Pair(fileToSave, it) }
+            })
+                    .flatMap({ settings ->
+                        splitVideoToFrames(settings.first, MediaMetadataRetriever(), settings.second)
                                 .toList()
                     })
                     .flatMap({ list ->
@@ -41,14 +43,14 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
         })
     }
 
-    private fun splitVideoToFrames(videoFile: File, retriever: MediaMetadataRetriever): Observable<Bitmap> {
+    private fun splitVideoToFrames(videoFile: File, retriever: MediaMetadataRetriever, framesCount: Int): Observable<Bitmap> {
         return Observable.create({ emitter ->
             try {
                 retriever.setDataSource(videoFile.path)
-                val dur = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-                val duration: Int = Integer.parseInt(dur) / 1000
-                for (second: Int in 1 until 6) {//TODO
-                    emitter.onNext(retriever.getFrameAtTime(second.toLong(), MediaMetadataRetriever.OPTION_CLOSEST))
+                val duration = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION))
+                val framesInterval = duration / framesCount
+                for (i: Int in 0 until framesCount) {
+                    emitter.onNext(retriever.getFrameAtTime((i * framesInterval * 1000).toLong(), MediaMetadataRetriever.OPTION_NEXT_SYNC))
                 }
                 emitter.onComplete()
             } finally {

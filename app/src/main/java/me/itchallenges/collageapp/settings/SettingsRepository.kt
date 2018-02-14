@@ -8,4 +8,6 @@ interface SettingsRepository {
     fun getFileToSaveVideo(): Single<File>
 
     fun getDirToSaveFrames(): Single<File>
+
+    fun getCollageImagesCount(): Single<Int>
 }

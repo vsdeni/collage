@@ -6,10 +6,12 @@ import java.io.File
 
 
 class SettingsDataSource(val context: Context) : SettingsRepository {
-
     override fun getFileToSaveVideo(): Single<File> =
             Single.just(File(context.filesDir, "video"))
 
     override fun getDirToSaveFrames(): Single<File> =
             Single.just(File(context.filesDir, "frames/"))
+
+    override fun getCollageImagesCount(): Single<Int> =
+            Single.just(5)
 }
