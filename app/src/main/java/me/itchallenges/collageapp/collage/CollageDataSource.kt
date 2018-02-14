@@ -32,10 +32,10 @@ class CollageDataSource(private val sharedPreferences: SharedPreferences,
         return Completable.fromCallable({
             dir.deleteRecursively()
             dir.mkdirs()
-            for ((i, frame) in images.withIndex()) {
+            for (frame in images) {
                 val bos = ByteArrayOutputStream()
                 frame.compress(Bitmap.CompressFormat.JPEG, 100, bos)
-                val fos = FileOutputStream(File(dir, i.toString() + ".jpg"))//TODO
+                val fos = FileOutputStream(File(dir, System.currentTimeMillis().toString()))
                 fos.write(bos.toByteArray())
                 fos.flush()
                 fos.close()

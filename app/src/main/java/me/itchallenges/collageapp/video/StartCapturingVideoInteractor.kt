@@ -28,7 +28,6 @@ class StartCapturingVideoInteractor(
                     file.delete()
                 }
 
-                camera.lock()
                 camera.unlock()
                 recorder.setCamera(camera)
                 recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA)

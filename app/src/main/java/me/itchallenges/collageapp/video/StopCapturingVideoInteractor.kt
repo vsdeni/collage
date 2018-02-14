@@ -17,19 +17,20 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
 
     override fun build(params: Params?): Completable =
             releaseCamera(params!!.mediaRecorder)
-                    .andThen({
-                        settingsRepository
-                                .getFileToSaveVideo()
-                                .flatMapCompletable({
-                                    splitVideoToFrames(it, MediaMetadataRetriever())
-                                            .toList()
-                                            .flatMap({ list ->
-                                                settingsRepository.getDirToSaveFrames()
-                                                        .map { Pair(list, it) }
-                                            })
-                                            .flatMapCompletable({ saveFrames(it.first, it.second) })
-                                }).subscribe({}, { it.printStackTrace() })
-                    }).compose(scheduler.highPriorityCompletable())
+                    .andThen(
+                            settingsRepository
+                                    .getFileToSaveVideo()
+                    )
+                    .flatMap({
+                        splitVideoToFrames(it, MediaMetadataRetriever())
+                                .toList()
+                    })
+                    .flatMap({ list ->
+                        settingsRepository.getDirToSaveFrames()
+                                .map { Pair(list, it) }
+                    })
+                    .flatMapCompletable({ saveFrames(it.first, it.second) })
+                    .compose(scheduler.highPriorityCompletable())
 
 
     private fun releaseCamera(recorder: MediaRecorder): Completable {
