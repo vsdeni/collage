@@ -17,7 +17,7 @@ interface CollageRepository {
 
     fun saveFrames(images: List<Bitmap>, dir: File): Completable
 
-    fun getFrames(dir: File): Observable<File>
+    fun getFrames(dir: File, count: Int): Observable<File>
 
     fun saveFrameFilter(indexes: IntArray, filter: Filter): Completable
 

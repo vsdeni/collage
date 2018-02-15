@@ -5,7 +5,7 @@ import java.io.File
 
 
 interface PatternView : BaseView {
-    fun showPatternsPicker(patterns: Array<Pattern>, active: Pattern?)
+    fun showPatternsPicker(patterns: List<Pattern>, active: Pattern?)
 
     fun getSelectedPattern(): Pattern
 

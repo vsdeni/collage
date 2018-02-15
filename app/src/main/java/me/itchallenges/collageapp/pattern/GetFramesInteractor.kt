@@ -14,7 +14,11 @@ class GetFramesInteractor(private val collageRepository: CollageRepository,
 
     override fun build(params: None?): Single<List<File>> {
         return settingsRepository.getDirToSaveFrames()
-                .flatMapObservable({ collageRepository.getFrames(it) })
+                .flatMap({ dir ->
+                    settingsRepository.getCollageImagesCount()
+                            .map { count -> Pair(dir, count) }
+                })
+                .flatMapObservable({ settings -> collageRepository.getFrames(settings.first,settings.second) })
                 .toList()
                 .compose(scheduler.highPrioritySingle())
     }

@@ -49,7 +49,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
         patternsView.addOnScrollListener(CenterScrollListener())
 
         presenter = PatternPresenter(this,
-                GetPatternsInteractor(PatternDataSource(this, Gson()), ThreadScheduler()),
+                GetPatternsInteractor(PatternDataSource(this, Gson()), SettingsDataSource(this), ThreadScheduler()),
                 GetFramesInteractor(CollageDataSource(getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), SettingsDataSource(this), ThreadScheduler()),
                 SaveSelectedPatternInteractor(CollageDataSource(getSharedPreferences(
@@ -69,7 +69,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun showPatternsPicker(patterns: Array<Pattern>, active: Pattern?) {
+    override fun showPatternsPicker(patterns: List<Pattern>, active: Pattern?) {
         patternsAdapter = PatternsAdapter(this, patterns)
         patternsView.adapter = patternsAdapter
     }

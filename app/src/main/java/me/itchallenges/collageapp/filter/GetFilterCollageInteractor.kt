@@ -13,9 +13,13 @@ class GetFilterCollageInteractor(private val settingsRepository: SettingsReposit
 
     override fun build(params: None?): Single<CollageFilterViewModel> {
         return settingsRepository.getDirToSaveFrames()
-                .flatMap({
+                .flatMap({ dir ->
+                    settingsRepository.getCollageImagesCount()
+                            .map { count -> Pair(dir, count) }
+                })
+                .flatMap({ settings ->
                     collageRepository
-                            .getFrames(it)
+                            .getFrames(settings.first, settings.second)
                             .toList()
                 }).flatMap({ frames ->
             collageRepository

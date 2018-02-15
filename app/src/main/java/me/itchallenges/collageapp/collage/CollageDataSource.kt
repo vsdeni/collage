@@ -43,9 +43,10 @@ class CollageDataSource(private val sharedPreferences: SharedPreferences,
         })
     }
 
-    override fun getFrames(dir: File): Observable<File> {
+    override fun getFrames(dir: File, count: Int): Observable<File> {
         return Observable.create<File>({ emitter ->
             dir.list()
+                    .filterIndexed({ i, path -> i < count })
                     .forEach { emitter.onNext(File(dir, it)) }
 
             emitter.onComplete()

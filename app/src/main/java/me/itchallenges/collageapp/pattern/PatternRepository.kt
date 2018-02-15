@@ -4,5 +4,5 @@ import io.reactivex.Single
 
 
 interface PatternRepository {
-    fun getPatterns(): Single<Array<Pattern>>
+    fun getPatterns(framesCount: Int): Single<List<Pattern>>
 }

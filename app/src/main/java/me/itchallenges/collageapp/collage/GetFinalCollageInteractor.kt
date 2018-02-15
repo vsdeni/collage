@@ -15,9 +15,13 @@ class GetFinalCollageInteractor(private val settingsRepository: SettingsReposito
 
     override fun build(params: None?): Single<CollageFinalViewModel> {
         return settingsRepository.getDirToSaveFrames()
-                .flatMap({
+                .flatMap({ dir ->
+                    settingsRepository.getCollageImagesCount()
+                            .map { count -> Pair(dir, count) }
+                })
+                .flatMap({ settings ->
                     collageRepository
-                            .getFrames(it)
+                            .getFrames(settings.first, settings.second)
                             .toList()
                 })
                 .flatMap({ frames ->
