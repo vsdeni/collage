@@ -11,6 +11,18 @@
         app:columns="10"
         app:spacing="1dp" />
 
+    <TextView
+        android:id="@+id/no_pattern"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/collage_preview"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/error_no_patterns"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/patterns_picker"
         android:layout_width="match_parent"

@@ -1,5 +1,7 @@
 package me.itchallenges.collageapp
 
+import android.content.Context
+
 
 interface BaseView {
     fun showLoader()
@@ -9,4 +11,6 @@ interface BaseView {
     fun showMessage(message: String)
 
     fun navigateNext()
+
+    fun context(): Context
 }

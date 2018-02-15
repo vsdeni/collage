@@ -105,4 +105,7 @@ class FilterActivity : AppCompatActivity(), FilterView {
         cellView.layoutParams = params
         return cellView
     }
+
+    override fun context(): Context =
+            applicationContext
 }

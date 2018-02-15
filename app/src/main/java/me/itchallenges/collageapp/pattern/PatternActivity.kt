@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
@@ -26,6 +27,7 @@ import java.io.File
 class PatternActivity : AppCompatActivity(), PatternView {
     private lateinit var patternsView: RecyclerView
     private lateinit var collageView: CollageLayout
+    private lateinit var noPattern: View
 
     private lateinit var presenter: PatternPresenter
     private var patternsAdapter: PatternsAdapter? = null
@@ -35,6 +37,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
         setContentView(R.layout.activity_pattern)
         patternsView = findViewById(R.id.patterns_picker)
         collageView = findViewById(R.id.collage_preview)
+        noPattern = findViewById(R.id.no_pattern)
 
         val layoutManager = CarouselLayoutManager(RecyclerView.HORIZONTAL, true)
         layoutManager.setPostLayoutListener(CarouselZoomPostLayoutListener())
@@ -66,16 +69,24 @@ class PatternActivity : AppCompatActivity(), PatternView {
     }
 
     override fun showMessage(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun showPatternsPicker(patterns: List<Pattern>, active: Pattern?) {
-        patternsAdapter = PatternsAdapter(this, patterns)
-        patternsView.adapter = patternsAdapter
+
+        if (patterns.isEmpty()) {
+            noPattern.visibility = View.VISIBLE
+            patternsView.visibility = View.GONE
+        } else {
+            noPattern.visibility = View.GONE
+            patternsView.visibility = View.VISIBLE
+            patternsAdapter = PatternsAdapter(this, patterns)
+            patternsView.adapter = patternsAdapter
+        }
     }
 
-    override fun getSelectedPattern(): Pattern {
-        return patternsAdapter?.getPattern(patternsView.tag as Int)!!
+    override fun getSelectedPattern(): Pattern? {
+        return patternsAdapter?.getPattern(patternsView.tag as Int)
     }
 
     override fun showCollagePreview(pattern: Pattern, frames: List<File>) {
@@ -112,4 +123,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
         view.layoutParams = params
         return view
     }
+
+    override fun context(): Context =
+            applicationContext
 }

@@ -8,14 +8,18 @@ class PatternPresenter(private val view: PatternView,
 
     fun loadPatterns() {
         getPatternsInteractor
-                .execute({ patterns -> view.showPatternsPicker(patterns, null) },
+                .execute({ patterns ->
+                    view.showPatternsPicker(patterns, null)
+                },
                         { it.printStackTrace() })
     }
 
     private fun loadFrames() {
-        getFramesInteractor
-                .execute({ list -> view.showCollagePreview(view.getSelectedPattern(), list) },
-                        { it.printStackTrace() })
+        view.getSelectedPattern()?.let {
+            getFramesInteractor
+                    .execute({ list -> view.showCollagePreview(it, list) },
+                            { it.printStackTrace() })
+        }
     }
 
     fun onPatternChanged() {
@@ -23,12 +27,14 @@ class PatternPresenter(private val view: PatternView,
     }
 
     fun onNavigateNextClicked() {
-        saveSelectedPatternInteractor
-                .execute({
-                    view.navigateNext()
-                }, {
-                    it.printStackTrace()
-                }, SaveSelectedPatternInteractor.Params(view.getSelectedPattern()))
+        view.getSelectedPattern()?.let {
+            saveSelectedPatternInteractor
+                    .execute({
+                        view.navigateNext()
+                    }, {
+                        it.printStackTrace()
+                    }, SaveSelectedPatternInteractor.Params(it))
+        }
     }
 
 }
