@@ -1,5 +1,8 @@
 package me.itchallenges.collageapp.video
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
 import android.media.MediaRecorder
 import android.view.WindowManager
 import me.itchallenges.collageapp.R
@@ -11,19 +14,24 @@ class VideoPresenter(private val view: VideoView,
                      private val startCapturingVideoInteractor: StartCapturingVideoInteractor,
                      private val stopCapturingVideoInteractor: StopCapturingVideoInteractor,
                      private val windowManager: WindowManager,
-                     private var mediaRecorder: MediaRecorder? = null) {
+                     private var mediaRecorder: MediaRecorder? = null) : LifecycleObserver {
 
-    fun onStart() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun startCameraPreview() {
         previewCameraInteractor
-                .execute({ view.showCameraPreview(it) }, {
+                .execute({ view.startCameraPreview(it) }, {
                     it.printStackTrace()
                     view.showMessage(view.context().getString(R.string.error_camera_init))
                 }, PreviewCameraInteractor.Params(windowManager))
     }
 
-    fun onStop() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun stopCameraPreview() {
         releaseCameraInteractor
-                .execute({}, {
+                .execute({
+                    view.stopCameraPreview()
+                }, {
+                    view.stopCameraPreview()
                     it.printStackTrace()
                 }, ReleaseCameraInteractor.Params(view.getPreviewCamera()))
     }

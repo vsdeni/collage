@@ -3,11 +3,12 @@ package me.itchallenges.collageapp.video
 import android.hardware.Camera
 import android.view.Surface
 import android.view.WindowManager
+import com.urancompany.indoorapp.executor.ExecutionScheduler
 import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Single
 
 @Suppress("DEPRECATION")
-class PreviewCameraInteractor : UseCase.RxSingle<Camera, PreviewCameraInteractor.Params>() {
+class PreviewCameraInteractor(private val scheduler: ExecutionScheduler) : UseCase.RxSingle<Camera, PreviewCameraInteractor.Params>() {
 
     override fun build(params: Params?): Single<Camera> {
         return Single.fromCallable({
@@ -16,7 +17,7 @@ class PreviewCameraInteractor : UseCase.RxSingle<Camera, PreviewCameraInteractor
             Camera.getCameraInfo(0, info)
             camera!!.setDisplayOrientation(getCorrectCameraOrientation(params!!.windowManager, info))
             camera
-        })
+        }).compose(scheduler.highPrioritySingle())
     }
 
     private fun getCorrectCameraOrientation(windowManager: WindowManager, info: Camera.CameraInfo): Int {

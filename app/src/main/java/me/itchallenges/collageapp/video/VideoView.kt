@@ -9,7 +9,9 @@ interface VideoView : BaseView {
 
     fun getPreviewCamera(): Camera?
 
-    fun showCameraPreview(camera: Camera)
+    fun startCameraPreview(camera: Camera)
+
+    fun stopCameraPreview()
 
     fun context(): Context
 }

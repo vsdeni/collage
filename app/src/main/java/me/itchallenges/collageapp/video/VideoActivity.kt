@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.FrameLayout
+import android.view.ViewGroup
 import android.widget.Toast
 import com.google.gson.Gson
 import com.urancompany.indoorapp.executor.ThreadScheduler
@@ -23,24 +23,27 @@ import me.itchallenges.collageapp.settings.SettingsDataSource
 class VideoActivity : AppCompatActivity(), VideoView {
     private var camera: Camera? = null
     private lateinit var presenter: VideoPresenter
+    private lateinit var previewView: ViewGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
 
+        previewView = findViewById(R.id.camera_preview)
+
         presenter = VideoPresenter(this,
-                PreviewCameraInteractor(),
-                ReleaseCameraInteractor(),
+                PreviewCameraInteractor(ThreadScheduler()),
+                ReleaseCameraInteractor(ThreadScheduler()),
                 StartCapturingVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
                 StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
                 windowManager,
                 MediaRecorder())
 
+        lifecycle.addObserver(presenter)
+
         start_recording.setOnClickListener { presenter.onStartRecordingClicked() }
         stop_recording.setOnClickListener { presenter.onStopRecordingClicked() }
-
-        presenter.onStart()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -51,18 +54,17 @@ class VideoActivity : AppCompatActivity(), VideoView {
     override fun getPreviewCamera(): Camera? =
             camera
 
-    override fun onPause() {
-        super.onPause()
-        presenter.onStop()
+    override fun startCameraPreview(camera: Camera) {
+        this.camera = camera
+        if (previewView.childCount == 0) {
+            val cameraPreview = CameraPreview(this, camera)
+            previewView.addView(cameraPreview)
+        }
     }
 
-    override fun showCameraPreview(camera: Camera) {
-        this.camera = camera
-        val preview = findViewById<FrameLayout>(R.id.camera_preview)
-        if (preview.childCount == 0) {
-            val cameraPreview = CameraPreview(this, camera)
-            preview.addView(cameraPreview)
-        }
+    override fun stopCameraPreview() {
+        camera = null
+        previewView.removeAllViews()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
