@@ -4,10 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/toolbar" />
+
     <me.itchallenges.collageapp.collage.CollageLayout
         android:id="@+id/collage_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         app:columns="10"
         app:spacing="1dp" />
 

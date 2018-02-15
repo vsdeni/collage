@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".video.VideoActivity">
+        <activity
+            android:name=".video.VideoActivity"
+            android:label="@string/screen_video_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +25,23 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".pattern.PatternActivity" />
-        <activity android:name=".filter.FilterActivity" />
+        <activity
+            android:name=".pattern.PatternActivity"
+            android:label="@string/screen_pattern_title"
+            android:parentActivityName=".video.VideoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".video.VideoActivity" />
+        </activity>
+
+        <activity
+            android:name=".filter.FilterActivity"
+            android:label="@string/screen_filter_title"
+            android:parentActivityName=".pattern.PatternActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".pattern.PatternActivity" />
+        </activity>
     </application>
 
 </manifest>

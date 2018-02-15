@@ -29,6 +29,10 @@ class FilterActivity : AppCompatActivity(), FilterView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         filtersView = findViewById(R.id.filter_picker)
         collageView = findViewById(R.id.collage_preview)
 

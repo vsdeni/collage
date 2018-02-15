@@ -35,6 +35,11 @@ class PatternActivity : AppCompatActivity(), PatternView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pattern)
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         patternsView = findViewById(R.id.patterns_picker)
         collageView = findViewById(R.id.collage_preview)
         noPattern = findViewById(R.id.no_pattern)

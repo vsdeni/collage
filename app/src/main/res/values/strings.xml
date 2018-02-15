@@ -11,4 +11,8 @@
     <string name="filter_sepia">Sepia</string>
     <string name="filter_blur">Blur</string>
     <string name="error_no_patterns">Sorry, no collage patterns are found! The app can\'t work properly</string>
+
+    <string name="screen_video_title">Step 1/4: Capture a Video</string>
+    <string name="screen_pattern_title">Step 2/4: Pick a Pattern</string>
+    <string name="screen_filter_title">Step 3/4: Pick a Filter</string>
 </resources>

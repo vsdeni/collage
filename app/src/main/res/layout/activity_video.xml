@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     tools:context="me.itchallenges.collageapp.video.VideoActivity">
 
+    <include layout="@layout/toolbar" />
+
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar" />
 
     <Button
         android:id="@+id/start_recording"

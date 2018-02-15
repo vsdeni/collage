@@ -29,6 +29,8 @@ class VideoActivity : AppCompatActivity(), VideoView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         previewView = findViewById(R.id.camera_preview)
 
         presenter = VideoPresenter(this,
