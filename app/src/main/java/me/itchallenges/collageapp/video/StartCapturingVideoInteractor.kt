@@ -24,8 +24,15 @@ class StartCapturingVideoInteractor(
 
     private fun startRecording(camera: Camera, recorder: MediaRecorder, file: File): Completable =
             Completable.fromCallable({
+
+                file.mkdirs()
+
+                if (!file.canWrite()) {
+                    throw SecurityException()
+                }
+
                 if (file.exists()) {
-                    file.delete()
+                    file.deleteRecursively()
                 }
 
                 camera.unlock()

@@ -2,9 +2,10 @@ package me.itchallenges.collageapp.video
 
 import android.hardware.Camera
 import me.itchallenges.collageapp.BaseView
+import me.itchallenges.collageapp.PermissionView
 
 
-interface VideoView : BaseView {
+interface VideoView : BaseView, PermissionView {
 
     fun getPreviewCamera(): Camera?
 

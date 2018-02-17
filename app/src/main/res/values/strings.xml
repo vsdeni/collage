@@ -19,4 +19,8 @@
     <string name="screen_filter_title">Pick a Filter</string>
     <string name="screen_filter_subtitle">Step 3/4</string>
     <string name="error_no_video">No video recorded</string>
+
+    <string name="permission_rationale_camera">Camera access is required to display the camera preview</string>
+    <string name="permission_rationale_storage">Storage access is required to save frames for a collage</string>
+    <string name="grant_access">Grant access</string>
 </resources>
