@@ -55,7 +55,7 @@ class FilterActivity : AppCompatActivity(), FilterView {
                 GetFiltersInteractor(FilterDataSource(),
                         ThreadScheduler()))
 
-        presenter.loadFilters()
+        lifecycle.addObserver(presenter)
     }
 
     override fun showFiltersPicker(filters: List<Filter>, active: Filter?) {

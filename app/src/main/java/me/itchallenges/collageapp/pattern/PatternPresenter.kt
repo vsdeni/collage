@@ -1,12 +1,17 @@
 package me.itchallenges.collageapp.pattern
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
+
 
 class PatternPresenter(private val view: PatternView,
                        private val getPatternsInteractor: GetPatternsInteractor,
                        private val getFramesInteractor: GetFramesInteractor,
-                       private val saveSelectedPatternInteractor: SaveSelectedPatternInteractor) {
+                       private val saveSelectedPatternInteractor: SaveSelectedPatternInteractor) : LifecycleObserver {
 
-    fun loadPatterns() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    private fun loadPatterns() {
         getPatternsInteractor
                 .execute({ patterns ->
                     view.showPatternsPicker(patterns, null)

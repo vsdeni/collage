@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +17,7 @@ import com.azoft.carousellayoutmanager.CenterScrollListener
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import com.urancompany.indoorapp.executor.ThreadScheduler
+import kotlinx.android.synthetic.main.activity_pattern.*
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
@@ -26,10 +26,6 @@ import me.itchallenges.collageapp.settings.SettingsDataSource
 import java.io.File
 
 class PatternActivity : AppCompatActivity(), PatternView {
-    private lateinit var patternsView: RecyclerView
-    private lateinit var collageView: CollageLayout
-    private lateinit var noPattern: View
-
     private lateinit var presenter: PatternPresenter
     private var patternsAdapter: PatternsAdapter? = null
 
@@ -43,21 +39,17 @@ class PatternActivity : AppCompatActivity(), PatternView {
         supportActionBar?.setTitle(R.string.screen_pattern_title)
         supportActionBar?.setSubtitle(R.string.screen_pattern_subtitle)
 
-        patternsView = findViewById(R.id.patterns_picker)
-        collageView = findViewById(R.id.collage_preview)
-        noPattern = findViewById(R.id.no_pattern)
-
         val layoutManager = CarouselLayoutManager(RecyclerView.HORIZONTAL, true)
         layoutManager.setPostLayoutListener(CarouselZoomPostLayoutListener())
         layoutManager.addOnItemSelectionListener { position ->
             if (position != -1) {
-                patternsView.tag = position
+                patterns_picker.tag = position
                 presenter.onPatternChanged()
             }
         }
-        patternsView.layoutManager = layoutManager
-        patternsView.setHasFixedSize(true)
-        patternsView.addOnScrollListener(CenterScrollListener())
+        patterns_picker.layoutManager = layoutManager
+        patterns_picker.setHasFixedSize(true)
+        patterns_picker.addOnScrollListener(CenterScrollListener())
 
         presenter = PatternPresenter(this,
                 GetPatternsInteractor(PatternDataSource(this, Gson()), SettingsDataSource(this), ThreadScheduler()),
@@ -65,7 +57,8 @@ class PatternActivity : AppCompatActivity(), PatternView {
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), SettingsDataSource(this), ThreadScheduler()),
                 SaveSelectedPatternInteractor(CollageDataSource(getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()))
-        presenter.loadPatterns()
+
+        lifecycle.addObserver(presenter)
     }
 
     override fun showLoader() {
@@ -83,25 +76,25 @@ class PatternActivity : AppCompatActivity(), PatternView {
     override fun showPatternsPicker(patterns: List<Pattern>, active: Pattern?) {
 
         if (patterns.isEmpty()) {
-            noPattern.visibility = View.VISIBLE
-            patternsView.visibility = View.GONE
+            no_pattern.visibility = View.VISIBLE
+            patterns_picker.visibility = View.GONE
         } else {
-            noPattern.visibility = View.GONE
-            patternsView.visibility = View.VISIBLE
+            no_pattern.visibility = View.GONE
+            patterns_picker.visibility = View.VISIBLE
             patternsAdapter = PatternsAdapter(this, patterns)
-            patternsView.adapter = patternsAdapter
+            patterns_picker.adapter = patternsAdapter
         }
     }
 
     override fun getSelectedPattern(): Pattern? {
-        return patternsAdapter?.getPattern(patternsView.tag as Int)
+        return patternsAdapter?.getPattern(patterns_picker.tag as Int)
     }
 
     override fun showCollagePreview(pattern: Pattern, frames: List<File>) {
-        collageView.removeAllViews()
+        collage_preview.removeAllViews()
         (0 until frames.size)
                 .map { createCollageCellView(frames[it], pattern.positions[it]) }
-                .forEach { collageView.addView(it) }
+                .forEach { collage_preview.addView(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -122,7 +115,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
 
     private fun createCollageCellView(frame: File, position: Position): View {
         val inflater = LayoutInflater.from(this)
-        val view = inflater.inflate(R.layout.item_collage_pattern, collageView, false)
+        val view = inflater.inflate(R.layout.item_collage_pattern, collage_preview, false)
         val image = view.findViewById<ImageView>(R.id.collage_image)
         val params = CollageLayout.CellLayoutParams(position.width, position.height, position.y, position.x)
         Picasso.with(this)

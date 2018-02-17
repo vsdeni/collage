@@ -1,11 +1,16 @@
 package me.itchallenges.collageapp.filter
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
+
 
 class FilterPresenter(private val view: FilterView,
                       private val getFilterCollageInteractor: GetFilterCollageInteractor,
-                      private val getFiltersInteractor: GetFiltersInteractor) {
+                      private val getFiltersInteractor: GetFiltersInteractor) : LifecycleObserver {
 
-    fun loadFilters() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    private fun loadFilters() {
         getFiltersInteractor.execute({ filters ->
             val checkedFilters = getAppliedFiltersToCheckedCells()
             when {
