@@ -30,6 +30,9 @@ class VideoActivity : AppCompatActivity(), VideoView {
         setContentView(R.layout.activity_video)
 
         setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setTitle(R.string.screen_video_title)
+        supportActionBar?.setSubtitle(R.string.screen_video_subtitle)
+        supportActionBar?.setLogo(R.mipmap.ic_launcher)
 
         previewView = findViewById(R.id.camera_preview)
 
@@ -39,6 +42,7 @@ class VideoActivity : AppCompatActivity(), VideoView {
                 StartCapturingVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
                 StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
+                ValidateVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
                 windowManager,
                 MediaRecorder())
 

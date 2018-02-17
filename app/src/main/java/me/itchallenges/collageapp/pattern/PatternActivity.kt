@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -39,6 +40,8 @@ class PatternActivity : AppCompatActivity(), PatternView {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setTitle(R.string.screen_pattern_title)
+        supportActionBar?.setSubtitle(R.string.screen_pattern_subtitle)
 
         patternsView = findViewById(R.id.patterns_picker)
         collageView = findViewById(R.id.collage_preview)

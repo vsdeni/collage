@@ -12,7 +12,11 @@
     <string name="filter_blur">Blur</string>
     <string name="error_no_patterns">Sorry, no collage patterns are found! The app can\'t work properly</string>
 
-    <string name="screen_video_title">Step 1/4: Capture a Video</string>
-    <string name="screen_pattern_title">Step 2/4: Pick a Pattern</string>
-    <string name="screen_filter_title">Step 3/4: Pick a Filter</string>
+    <string name="screen_video_title">Capture a Video</string>
+    <string name="screen_video_subtitle">Step 1/4</string>
+    <string name="screen_pattern_title">Pick a Pattern</string>
+    <string name="screen_pattern_subtitle">Step 2/4</string>
+    <string name="screen_filter_title">Pick a Filter</string>
+    <string name="screen_filter_subtitle">Step 3/4</string>
+    <string name="error_no_video">No video recorded</string>
 </resources>

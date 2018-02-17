@@ -13,6 +13,7 @@ class VideoPresenter(private val view: VideoView,
                      private val releaseCameraInteractor: ReleaseCameraInteractor,
                      private val startCapturingVideoInteractor: StartCapturingVideoInteractor,
                      private val stopCapturingVideoInteractor: StopCapturingVideoInteractor,
+                     private val validateVideoInteractor: ValidateVideoInteractor,
                      private val windowManager: WindowManager,
                      private var mediaRecorder: MediaRecorder? = null) : LifecycleObserver {
 
@@ -56,7 +57,6 @@ class VideoPresenter(private val view: VideoView,
         stopCapturingVideoInteractor
                 .execute({
                     mediaRecorder = null
-                    view.showMessage("Success!")//TODO
                 }, {
                     mediaRecorder = null
                     it.printStackTrace()
@@ -65,6 +65,12 @@ class VideoPresenter(private val view: VideoView,
     }
 
     fun onNavigateNextClicked() {
-        view.navigateNext()
+        validateVideoInteractor
+                .execute({
+                    view.navigateNext()
+                }, {
+                    view.showMessage(it.message
+                            ?: view.context().getString(R.string.error_no_video))
+                })
     }
 }

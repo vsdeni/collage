@@ -16,8 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".video.VideoActivity"
-            android:label="@string/screen_video_title">
+            android:name=".video.VideoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +26,6 @@
 
         <activity
             android:name=".pattern.PatternActivity"
-            android:label="@string/screen_pattern_title"
             android:parentActivityName=".video.VideoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -36,7 +34,6 @@
 
         <activity
             android:name=".filter.FilterActivity"
-            android:label="@string/screen_filter_title"
             android:parentActivityName=".pattern.PatternActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

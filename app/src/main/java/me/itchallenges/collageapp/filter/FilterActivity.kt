@@ -32,6 +32,8 @@ class FilterActivity : AppCompatActivity(), FilterView {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setTitle(R.string.screen_filter_title)
+        supportActionBar?.setSubtitle(R.string.screen_filter_subtitle)
 
         filtersView = findViewById(R.id.filter_picker)
         collageView = findViewById(R.id.collage_preview)
