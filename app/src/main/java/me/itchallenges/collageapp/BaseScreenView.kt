@@ -3,7 +3,7 @@ package me.itchallenges.collageapp
 import android.content.Context
 
 
-interface BaseView {
+interface BaseScreenView {
     fun showLoader()
 
     fun hideLoader()

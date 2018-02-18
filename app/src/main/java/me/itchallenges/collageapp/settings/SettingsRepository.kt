@@ -9,5 +9,10 @@ interface SettingsRepository {
 
     fun getDirToSaveFrames(): Single<File>
 
+    fun getFileToSaveCollage(): Single<File>
+
     fun getCollageImagesCount(): Single<Int>
+
+    //only 1 value since collage is square
+    fun getFinalCollageImageSize(): Single<Int>
 }

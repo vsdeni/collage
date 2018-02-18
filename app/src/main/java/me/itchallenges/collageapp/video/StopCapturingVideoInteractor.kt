@@ -27,11 +27,7 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
                         splitVideoToFrames(settings.first, MediaMetadataRetriever(), settings.second)
                                 .toList()
                     })
-                    .flatMap({ list ->
-                        settingsRepository.getDirToSaveFrames()
-                                .map { Pair(list, it) }
-                    })
-                    .flatMapCompletable({ saveFrames(it.first, it.second) })
+                    .flatMapCompletable({ saveFrames(it) })
                     .compose(scheduler.highPriorityCompletable())
 
 
@@ -59,9 +55,9 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
         })
     }
 
-    private fun saveFrames(frames: List<Bitmap>, dir: File): Completable =
+    private fun saveFrames(frames: List<Bitmap>): Completable =
             collageRepository
-                    .saveFrames(frames, dir)
+                    .saveFrames(frames)
 
     data class Params(val mediaRecorder: MediaRecorder)
 }

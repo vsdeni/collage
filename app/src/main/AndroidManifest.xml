@@ -37,6 +37,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".pattern.PatternActivity" />
         </activity>
+
+        <activity
+            android:name=".browse.BrowseActivity"
+            android:parentActivityName=".browse.BrowseActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".filter.FilterActivity" />
+        </activity>
     </application>
 
 </manifest>

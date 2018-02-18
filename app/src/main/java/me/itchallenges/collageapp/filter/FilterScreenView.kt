@@ -1,9 +1,10 @@
 package me.itchallenges.collageapp.filter
 
-import me.itchallenges.collageapp.BaseView
+import android.graphics.Bitmap
+import me.itchallenges.collageapp.BaseScreenView
 
 
-interface FilterView : BaseView {
+interface FilterScreenView : BaseScreenView {
     fun showFiltersPicker(filters: List<Filter>, active: Filter?)
 
     fun getCheckedCells(): BooleanArray
@@ -15,4 +16,6 @@ interface FilterView : BaseView {
     fun showCollagePreview(collage: CollageFilterViewModel,
                            filters: Array<Filter>,
                            checked: BooleanArray)
+
+    fun getFilteredImages(): Array<Bitmap>
 }

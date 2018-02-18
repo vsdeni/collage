@@ -1,13 +1,12 @@
 package me.itchallenges.collageapp.collage
 
 import android.graphics.Bitmap
+import android.net.Uri
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import me.itchallenges.collageapp.filter.Filter
 import me.itchallenges.collageapp.pattern.Pattern
-import java.io.File
 
 
 interface CollageRepository {
@@ -15,15 +14,15 @@ interface CollageRepository {
 
     fun getPattern(): Single<Pattern>
 
-    fun saveFrames(images: List<Bitmap>, dir: File): Completable
+    fun saveFrames(images: List<Bitmap>): Completable
 
-    fun getFrames(dir: File, count: Int): Observable<File>
+    fun getFrames(): Observable<Uri>
 
-    fun saveFrameFilter(indexes: IntArray, filter: Filter): Completable
+    fun saveFilters(filters: Array<Filter>): Completable
 
-    fun getFrameFilter(indexes: IntArray): Observable<Filter>
+    fun getFilters(indexes: IntArray): Observable<Filter>
 
-    fun saveGlobalFilter(filter: Filter): Completable
+    fun getCollageImage(): Single<Uri>
 
-    fun getGlobalFilter(): Maybe<Filter>
+    fun saveCollageImage(bitmap: Bitmap): Single<Uri>
 }

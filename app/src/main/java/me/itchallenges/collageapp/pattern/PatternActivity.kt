@@ -2,6 +2,7 @@ package me.itchallenges.collageapp.pattern
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
@@ -23,10 +24,9 @@ import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
 import me.itchallenges.collageapp.filter.FilterActivity
 import me.itchallenges.collageapp.settings.SettingsDataSource
-import java.io.File
 
-class PatternActivity : AppCompatActivity(), PatternView {
-    private lateinit var presenter: PatternPresenter
+class PatternActivity : AppCompatActivity(), PatternScreenView {
+    private lateinit var presenter: PatternScreenPresenter
     private var patternsAdapter: PatternsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,11 +51,11 @@ class PatternActivity : AppCompatActivity(), PatternView {
         patterns_picker.setHasFixedSize(true)
         patterns_picker.addOnScrollListener(CenterScrollListener())
 
-        presenter = PatternPresenter(this,
+        presenter = PatternScreenPresenter(this,
                 GetPatternsInteractor(PatternDataSource(this, Gson()), SettingsDataSource(this), ThreadScheduler()),
-                GetFramesInteractor(CollageDataSource(getSharedPreferences(
-                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), SettingsDataSource(this), ThreadScheduler()),
-                SaveSelectedPatternInteractor(CollageDataSource(getSharedPreferences(
+                GetFramesInteractor(CollageDataSource(SettingsDataSource(this), getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
+                SaveSelectedPatternInteractor(CollageDataSource(SettingsDataSource(this), getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()))
 
         lifecycle.addObserver(presenter)
@@ -90,7 +90,7 @@ class PatternActivity : AppCompatActivity(), PatternView {
         return patternsAdapter?.getPattern(patterns_picker.tag as Int)
     }
 
-    override fun showCollagePreview(pattern: Pattern, frames: List<File>) {
+    override fun showCollagePreview(pattern: Pattern, frames: List<Uri>) {
         collage_preview.removeAllViews()
         (0 until frames.size)
                 .map { createCollageCellView(frames[it], pattern.positions[it]) }
@@ -113,14 +113,14 @@ class PatternActivity : AppCompatActivity(), PatternView {
         startActivity(Intent(this, FilterActivity::class.java))
     }
 
-    private fun createCollageCellView(frame: File, position: Position): View {
+    private fun createCollageCellView(image: Uri, position: Position): View {
         val inflater = LayoutInflater.from(this)
         val view = inflater.inflate(R.layout.item_collage_pattern, collage_preview, false)
-        val image = view.findViewById<ImageView>(R.id.collage_image)
+        val imageView = view.findViewById<ImageView>(R.id.collage_image)
         val params = CollageLayout.CellLayoutParams(position.width, position.height, position.y, position.x)
         Picasso.with(this)
-                .load(frame)
-                .into(image)
+                .load(image)
+                .into(imageView)
         view.layoutParams = params
         return view
     }

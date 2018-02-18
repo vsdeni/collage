@@ -1,6 +1,7 @@
 package me.itchallenges.collageapp.filter
 
 import android.content.Context
+import android.net.Uri
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
@@ -8,7 +9,6 @@ import jp.wasabeef.picasso.transformations.BlurTransformation
 import jp.wasabeef.picasso.transformations.gpu.ContrastFilterTransformation
 import jp.wasabeef.picasso.transformations.gpu.SepiaFilterTransformation
 import jp.wasabeef.picasso.transformations.gpu.ToonFilterTransformation
-import java.io.File
 
 
 enum class Filter {
@@ -18,9 +18,9 @@ enum class Filter {
     SEPIA,
     CONTRAST;
 
-    fun apply(context: Context, file: File, imageView: ImageView) {
+    fun apply(context: Context, image: Uri, imageView: ImageView) {
         val request = Picasso.with(context)
-                .load(file)
+                .load(image)
 
         getTransformation(context, this)?.let {
             request.transform(it)

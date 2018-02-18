@@ -26,9 +26,9 @@ import me.itchallenges.collageapp.settings.SettingsDataSource
 
 
 @Suppress("DEPRECATION")
-class VideoActivity : AppCompatActivity(), VideoView {
+class VideoActivity : AppCompatActivity(), VideoScreenView {
     private var camera: Camera? = null
-    private lateinit var presenter: VideoPresenter
+    private lateinit var presenter: VideoScreenPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +40,11 @@ class VideoActivity : AppCompatActivity(), VideoView {
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
         placeholder_no_access.visibility = View.GONE
 
-        presenter = VideoPresenter(this,
+        presenter = VideoScreenPresenter(this,
                 PreviewCameraInteractor(ThreadScheduler()),
                 ReleaseCameraInteractor(ThreadScheduler()),
                 StartCapturingVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
-                StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(getSharedPreferences(
+                StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(SettingsDataSource(this), getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
                 ValidateVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
                 windowManager,

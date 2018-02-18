@@ -5,10 +5,10 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 
 
-class PatternPresenter(private val view: PatternView,
-                       private val getPatternsInteractor: GetPatternsInteractor,
-                       private val getFramesInteractor: GetFramesInteractor,
-                       private val saveSelectedPatternInteractor: SaveSelectedPatternInteractor) : LifecycleObserver {
+class PatternScreenPresenter(private val view: PatternScreenView,
+                             private val getPatternsInteractor: GetPatternsInteractor,
+                             private val getFramesInteractor: GetFramesInteractor,
+                             private val saveSelectedPatternInteractor: SaveSelectedPatternInteractor) : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadPatterns() {

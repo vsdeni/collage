@@ -2,20 +2,21 @@ package me.itchallenges.collageapp.collage
 
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
 import com.google.gson.Gson
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import me.itchallenges.collageapp.filter.Filter
 import me.itchallenges.collageapp.pattern.Pattern
+import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
 
-class CollageDataSource(private val sharedPreferences: SharedPreferences,
+class CollageDataSource(private val settingsRepository: SettingsRepository,
+                        private val sharedPreferences: SharedPreferences,
                         private val gson: Gson) : CollageRepository {
 
     override fun savePattern(pattern: Pattern): Completable =
@@ -28,60 +29,85 @@ class CollageDataSource(private val sharedPreferences: SharedPreferences,
                 gson.fromJson(sharedPreferences.getString(patternKey, ""), Pattern::class.java)
             })
 
-    override fun saveFrames(images: List<Bitmap>, dir: File): Completable {
-        return Completable.fromCallable({
-            dir.deleteRecursively()
-            dir.mkdirs()
-            for (frame in images) {
-                val bos = ByteArrayOutputStream()
-                frame.compress(Bitmap.CompressFormat.JPEG, 100, bos)
-                val fos = FileOutputStream(File(dir, System.currentTimeMillis().toString()))
-                fos.write(bos.toByteArray())
-                fos.flush()
-                fos.close()
-            }
-        })
+    override fun saveFrames(images: List<Bitmap>): Completable {
+        return settingsRepository.getDirToSaveFrames()
+                .flatMapCompletable({ dir ->
+                    Completable.fromCallable({
+                        dir.deleteRecursively()
+                        dir.mkdirs()
+                        for (frame in images) {
+                            convertBitmapToFile(File(dir, System.currentTimeMillis().toString()), frame)
+                        }
+                    })
+                })
     }
 
-    override fun getFrames(dir: File, count: Int): Observable<File> {
-        return Observable.create<File>({ emitter ->
-            dir.list()
-                    .filterIndexed({ i, path -> i < count })
-                    .forEach { emitter.onNext(File(dir, it)) }
+    override fun getFrames(): Observable<Uri> {
+        return settingsRepository.getDirToSaveFrames()
+                .flatMap({ dir ->
+                    settingsRepository.getCollageImagesCount()
+                            .map { Pair(dir, it) }
+                })
+                .flatMapObservable { settings ->
+                    Observable.create<Uri>({ emitter ->
+                        settings.first.list()
+                                .filterIndexed({ i, _ -> i < settings.second })
+                                .map { Uri.fromFile(File(settings.first, it)) }
+                                .forEach { emitter.onNext(it) }
 
-            emitter.onComplete()
-        })
+                        emitter.onComplete()
+                    })
+                }
     }
 
-    override fun saveFrameFilter(indexes: IntArray, filter: Filter): Completable =
+    override fun saveFilters(filters: Array<Filter>): Completable =
             Completable.fromCallable({
-                indexes
-                        .forEach { sharedPreferences.edit().putString(filterKey + it, gson.toJson(filter)).apply() }
+                filters
+                        .map { it.ordinal }
+                        .forEachIndexed { index, filterId ->
+                            sharedPreferences.edit().putInt(filterKey + index, filterId).apply()
+                        }
             })
 
-    override fun getFrameFilter(indexes: IntArray): Observable<Filter> =
+    override fun getFilters(indexes: IntArray): Observable<Filter> =
             Observable.create({ emitter ->
                 indexes
                         .filter { sharedPreferences.contains(filterKey + it) }
-                        .forEach { emitter.onNext(gson.fromJson(sharedPreferences.getString(filterKey + it, ""), Filter::class.java)) }
+                        .map { Filter.values()[sharedPreferences.getInt(filterKey + it, 0)] }
+                        .forEach { filter ->
+                            emitter.onNext(filter)
+                        }
                 emitter.onComplete()
             })
 
-    override fun saveGlobalFilter(filter: Filter): Completable =
-            Completable.fromCallable({
-                sharedPreferences.edit().putString(filterKey, gson.toJson(filter)).apply()
-            })
+    override fun saveCollageImage(bitmap: Bitmap): Single<Uri> {
+        return settingsRepository
+                .getFileToSaveCollage()
+                .flatMap({ file ->
+                    convertBitmapToFile(file, bitmap)
+                            .andThen(Single.just(Uri.fromFile(file)))
+                })
 
-    override fun getGlobalFilter(): Maybe<Filter> =
-            Maybe.create({ emitter ->
-                if (sharedPreferences.contains(filterKey)) {
-                    emitter.onSuccess(gson.fromJson(sharedPreferences.getString(filterKey, ""), Filter::class.java))
-                }
-                emitter.onComplete()
-            })
+    }
 
-    private fun bitmapFromFile(file: File): Bitmap {
-        return BitmapFactory.decodeFile(file.absolutePath)
+    private fun convertBitmapToFile(file: File, bitmap: Bitmap): Completable {
+        return Completable.fromCallable({
+
+            file.delete()
+
+            val bos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
+            val fos = FileOutputStream(file)
+            fos.write(bos.toByteArray())
+            fos.flush()
+            fos.close()
+        })
+    }
+
+    override fun getCollageImage(): Single<Uri> {
+        return settingsRepository
+                .getFileToSaveCollage()
+                .map { Uri.fromFile(it) }
     }
 }
 

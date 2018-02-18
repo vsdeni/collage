@@ -1,8 +1,8 @@
 package me.itchallenges.collageapp.filter
 
+import android.net.Uri
 import me.itchallenges.collageapp.pattern.Pattern
-import java.io.File
 
 
-data class CollageFilterViewModel(val frames: List<File>,
+data class CollageFilterViewModel(val images: List<Uri>,
                                   val pattern: Pattern)

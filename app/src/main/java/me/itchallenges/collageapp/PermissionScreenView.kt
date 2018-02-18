@@ -1,7 +1,7 @@
 package me.itchallenges.collageapp
 
 
-interface PermissionView {
+interface PermissionScreenView {
 
     fun isAccessGranted(permission: String): Boolean
 

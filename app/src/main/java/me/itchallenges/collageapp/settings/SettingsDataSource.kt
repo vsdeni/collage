@@ -7,6 +7,7 @@ import java.io.File
 
 
 class SettingsDataSource(val context: Context) : SettingsRepository {
+
     override fun getFileToSaveVideo(): Single<File> =
             Single.just(File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_MOVIES), "video"))
@@ -16,4 +17,12 @@ class SettingsDataSource(val context: Context) : SettingsRepository {
 
     override fun getCollageImagesCount(): Single<Int> =
             Single.just(5)
+
+    override fun getFileToSaveCollage(): Single<File> =
+            Single.just(File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES), "collage"))
+
+    override fun getFinalCollageImageSize(): Single<Int> {
+        return Single.just(600)
+    }
 }

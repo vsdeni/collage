@@ -5,14 +5,15 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 
 
-class FilterPresenter(private val view: FilterView,
-                      private val getFilterCollageInteractor: GetFilterCollageInteractor,
-                      private val getFiltersInteractor: GetFiltersInteractor) : LifecycleObserver {
+class FilterScreenPresenter(private val view: FilterScreenView,
+                            private val getFilterCollageInteractor: GetFilterCollageInteractor,
+                            private val getFiltersInteractor: GetFiltersInteractor,
+                            private val saveFiltersInteractor: SaveImageInteractor) : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadFilters() {
         getFiltersInteractor.execute({ filters ->
-            val checkedFilters = getAppliedFiltersToCheckedCells()
+            val checkedFilters = getFiltersAppliedToCheckedCells()
             when {
                 checkedFilters.size > 1 -> view.showFiltersPicker(filters, Filter.NONE)
                 checkedFilters.size == 1 -> view.showFiltersPicker(filters, checkedFilters[0])
@@ -21,7 +22,7 @@ class FilterPresenter(private val view: FilterView,
         }, { it.printStackTrace() })
     }
 
-    private fun getAppliedFiltersToCheckedCells(): List<Filter> {
+    private fun getFiltersAppliedToCheckedCells(): List<Filter> {
         val checked = view.getCheckedCells()
         val filters = view.getAppliedFilters()
 
@@ -39,7 +40,7 @@ class FilterPresenter(private val view: FilterView,
     private fun loadCollage() {
         getFilterCollageInteractor
                 .execute({ collage ->
-                    val checked = getChecked(collage.frames.size)
+                    val checked = getChecked(collage.images.size)
                     val filters = getFilters(checked)
                     view.showCollagePreview(
                             collage,
@@ -58,7 +59,7 @@ class FilterPresenter(private val view: FilterView,
         }
     }
 
-    private fun getFilters(checked: BooleanArray): Array<Filter> {
+    private fun getFilters(checked: BooleanArray): Array<Filter> {//TODO
         val filters = view.getAppliedFilters()
         return (if (!filters.isEmpty()) {
             filters
@@ -80,5 +81,14 @@ class FilterPresenter(private val view: FilterView,
 
     fun onCheckedChanged() {
         loadFilters()
+    }
+
+    fun onNavigateNextClicked() {
+        saveFiltersInteractor
+                .execute({
+                    view.navigateNext()
+                }, {
+                    it.printStackTrace()
+                }, SaveImageInteractor.Params(view.getFilteredImages(), view.getAppliedFilters()))
     }
 }
