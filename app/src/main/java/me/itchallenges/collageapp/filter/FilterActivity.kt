@@ -51,10 +51,10 @@ class FilterActivity : AppCompatActivity(), FilterScreenView {
         filter_picker.addOnScrollListener(CenterScrollListener())
 
         presenter = FilterScreenPresenter(this,
-                GetFilterCollageInteractor(CollageDataSource(SettingsDataSource(this), getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),//TODO
+                GetFilterCollageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),//TODO
                 GetFiltersInteractor(FilterDataSource(),
                         ThreadScheduler()),
-                SaveImageInteractor(CollageDataSource(SettingsDataSource(this), getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()),
+                SaveImageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()),
                         SettingsDataSource(this), ThreadScheduler()))
 
         lifecycle.addObserver(presenter)

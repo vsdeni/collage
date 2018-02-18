@@ -53,9 +53,9 @@ class PatternActivity : AppCompatActivity(), PatternScreenView {
 
         presenter = PatternScreenPresenter(this,
                 GetPatternsInteractor(PatternDataSource(this, Gson()), SettingsDataSource(this), ThreadScheduler()),
-                GetFramesInteractor(CollageDataSource(SettingsDataSource(this), getSharedPreferences(
+                GetFramesInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
-                SaveSelectedPatternInteractor(CollageDataSource(SettingsDataSource(this), getSharedPreferences(
+                SaveSelectedPatternInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()))
 
         lifecycle.addObserver(presenter)

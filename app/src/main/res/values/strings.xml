@@ -3,6 +3,7 @@
     <string name="error_camera_init">Camera initialization error</string>
     <string name="menu_pattern_next">Next</string>
     <string name="menu_video_next">Next</string>
+    <string name="menu_browse_restart">Start over</string>
     <string name="preference_file_key">collage.prefs</string>
 
     <string name="filter_none">No Filter</string>
@@ -25,4 +26,7 @@
     <string name="permission_rationale_camera">Camera access is required to display the camera preview</string>
     <string name="permission_rationale_storage">Storage access is required to save frames for a collage</string>
     <string name="grant_access">Grant access</string>
+
+    <string name="send_to">Send to</string>
+    <string name="hint_browse_message">Write a caption</string>
 </resources>

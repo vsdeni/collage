@@ -5,5 +5,9 @@ import me.itchallenges.collageapp.BaseScreenView
 
 
 interface BrowseScreenView : BaseScreenView {
-    fun showCollage(image: Uri)
+    fun showCollageImage(image: Uri)
+
+    fun shareCollageImage(image: Uri, message: String)
+
+    fun getCaption(): String
 }

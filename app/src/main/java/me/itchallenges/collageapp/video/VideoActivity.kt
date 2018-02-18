@@ -44,7 +44,7 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
                 PreviewCameraInteractor(ThreadScheduler()),
                 ReleaseCameraInteractor(ThreadScheduler()),
                 StartCapturingVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
-                StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(SettingsDataSource(this), getSharedPreferences(
+                StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
                 ValidateVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
                 windowManager,

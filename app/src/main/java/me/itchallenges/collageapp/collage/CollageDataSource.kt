@@ -1,8 +1,10 @@
 package me.itchallenges.collageapp.collage
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
+import android.support.v4.content.FileProvider
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -15,7 +17,8 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-class CollageDataSource(private val settingsRepository: SettingsRepository,
+class CollageDataSource(private val context: Context,
+                        private val settingsRepository: SettingsRepository,
                         private val sharedPreferences: SharedPreferences,
                         private val gson: Gson) : CollageRepository {
 
@@ -90,7 +93,7 @@ class CollageDataSource(private val settingsRepository: SettingsRepository,
 
     }
 
-    private fun convertBitmapToFile(file: File, bitmap: Bitmap): Completable {
+    private fun convertBitmapToFile(file: File, bitmap: Bitmap): Completable {//TODO
         return Completable.fromCallable({
 
             file.delete()
@@ -109,6 +112,15 @@ class CollageDataSource(private val settingsRepository: SettingsRepository,
                 .getFileToSaveCollage()
                 .map { Uri.fromFile(it) }
     }
+
+    override fun getCollageImageForSharing(): Single<Uri> {
+        return getCollageImage()
+                .map {
+                    FileProvider.getUriForFile(context,
+                            context.packageName + ".provider", File(it.path))
+                }
+    }
+
 }
 
 private const val patternKey = "pattern"

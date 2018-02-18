@@ -25,4 +25,6 @@ interface CollageRepository {
     fun getCollageImage(): Single<Uri>
 
     fun saveCollageImage(bitmap: Bitmap): Single<Uri>
+
+    fun getCollageImageForSharing(): Single<Uri>
 }

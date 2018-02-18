@@ -20,9 +20,9 @@ class SettingsDataSource(val context: Context) : SettingsRepository {
 
     override fun getFileToSaveCollage(): Single<File> =
             Single.just(File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), "collage"))
+                    Environment.DIRECTORY_PICTURES), "collage.jpg"))
 
     override fun getFinalCollageImageSize(): Single<Int> {
-        return Single.just(600)
+        return Single.just(800)
     }
 }
