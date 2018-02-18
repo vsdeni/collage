@@ -47,9 +47,10 @@ class VideoScreenPresenter(private val view: VideoScreenView,
     }
 
     fun onStartRecordingClicked() {
-        changeRecordingButtonsMode(true)
         startCapturingVideoInteractor
-                .execute({}, {
+                .execute({
+                    changeRecordingButtonsMode(true)
+                }, {
                     it.printStackTrace()
                     if (it is SecurityException) {
                         requestStoragePermission()
@@ -61,11 +62,12 @@ class VideoScreenPresenter(private val view: VideoScreenView,
     }
 
     fun onStopRecordingClicked() {
-        changeRecordingButtonsMode(false)
         stopCapturingVideoInteractor
                 .execute({
+                    changeRecordingButtonsMode(false)
                     mediaRecorder = null
                 }, {
+                    changeRecordingButtonsMode(false)
                     mediaRecorder = null
                     it.printStackTrace()
                     view.showMessage(view.context().getString(R.string.error_camera_init))//TODO
