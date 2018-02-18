@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_browse.*
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.settings.SettingsDataSource
+import me.itchallenges.collageapp.video.VideoActivity
 
 
 class BrowseActivity : AppCompatActivity(), BrowseScreenView {
@@ -77,7 +78,9 @@ class BrowseActivity : AppCompatActivity(), BrowseScreenView {
             input_message.text.toString()
 
     override fun navigateNext() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, VideoActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     override fun context(): Context =
