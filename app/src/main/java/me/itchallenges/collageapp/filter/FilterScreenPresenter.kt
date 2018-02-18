@@ -22,6 +22,23 @@ class FilterScreenPresenter(private val view: FilterScreenView,
         }, { it.printStackTrace() })
     }
 
+    fun onFilterChanged() {
+        loadCollage()
+    }
+
+    fun onCheckedChanged() {
+        loadFilters()
+    }
+
+    fun onNavigateNextClicked() {
+        saveFiltersInteractor
+                .execute({
+                    view.navigateNext()
+                }, {
+                    it.printStackTrace()
+                }, SaveImageInteractor.Params(view.getFilteredImages(), view.getAppliedFilters()))
+    }
+
     private fun getFiltersAppliedToCheckedCells(): List<Filter> {
         val checked = view.getCheckedCells()
         val filters = view.getAppliedFilters()
@@ -65,30 +82,12 @@ class FilterScreenPresenter(private val view: FilterScreenView,
             filters
         } else {
             Array(checked.size, { Filter.NONE })
-        })
-                .mapIndexed({ index, filter ->
-                    if (checked[index]) {
-                        view.getSelectedFilter()
-                    } else {
-                        filter
-                    }
-                }).toTypedArray()
-    }
-
-    fun onFilterChanged() {
-        loadCollage()
-    }
-
-    fun onCheckedChanged() {
-        loadFilters()
-    }
-
-    fun onNavigateNextClicked() {
-        saveFiltersInteractor
-                .execute({
-                    view.navigateNext()
-                }, {
-                    it.printStackTrace()
-                }, SaveImageInteractor.Params(view.getFilteredImages(), view.getAppliedFilters()))
+        }).mapIndexed({ index, filter ->
+            if (checked[index]) {
+                view.getSelectedFilter()
+            } else {
+                filter
+            }
+        }).toTypedArray()
     }
 }

@@ -100,7 +100,7 @@ class VideoScreenPresenter(private val view: VideoScreenView,
                     view.navigateNext()
                 }, {
                     view.showMessage(it.message
-                            ?: view.context().getString(R.string.error_no_video))
+                            ?: view.context().getString(R.string.error_no_frames))
                 })
     }
 

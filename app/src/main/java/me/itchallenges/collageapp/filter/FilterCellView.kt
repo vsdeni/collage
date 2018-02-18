@@ -4,40 +4,35 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
-import android.widget.CheckBox
 import android.widget.FrameLayout
-import android.widget.ImageView
+import kotlinx.android.synthetic.main.item_collage_filter.view.*
 import me.itchallenges.collageapp.R
 
 
 class FilterCellView(context: Context,
                      image: Uri,
                      val filter: Filter,
-                     val checked: Boolean,//TODO
+                     val checked: Boolean,
                      onClickListener: OnClickListener) : FrameLayout(context) {
 
-    private var imageView: ImageView
-    private var checkBox: CheckBox
-
     init {
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.item_collage_filter, this, true)
-        imageView = view.findViewById(R.id.collage_image)
-        imageView.isDrawingCacheEnabled = true
-        checkBox = view.findViewById(R.id.collage_checkbox)
-        checkBox.isChecked = checked
-        checkBox.isDrawingCacheEnabled = false
-        checkBox.setOnClickListener(onClickListener)
-        filter.apply(context, image, imageView)
+        LayoutInflater.from(context)
+                .inflate(R.layout.item_collage_filter, this, true)
+        collage_image.isDrawingCacheEnabled = true
+        collage_checkbox.isChecked = checked
+        collage_checkbox.isDrawingCacheEnabled = false
+        collage_checkbox.setOnClickListener(onClickListener)
+        filter.apply(context, image, collage_image)
     }
 
     fun getBitmap(): Bitmap {
-        imageView.buildDrawingCache()
-        val bitmap = imageView.getDrawingCache(false).copy(Bitmap.Config.ARGB_8888, false)
-        imageView.destroyDrawingCache()
+        collage_image.buildDrawingCache()
+        val bitmap = collage_image.getDrawingCache(false)
+                .copy(Bitmap.Config.ARGB_8888, false)
+        collage_image.destroyDrawingCache()
         return bitmap
     }
 
     fun isChecked(): Boolean =
-            checkBox.isChecked
+            collage_checkbox.isChecked
 }

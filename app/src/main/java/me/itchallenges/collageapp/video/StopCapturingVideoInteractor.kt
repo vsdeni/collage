@@ -45,9 +45,10 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
                 retriever.setDataSource(videoFile.path)
                 val duration = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION))
                 val framesInterval = duration / framesCount
-                for (i: Int in 0 until framesCount) {
-                    emitter.onNext(retriever.getFrameAtTime((i * framesInterval * 1000).toLong(), MediaMetadataRetriever.OPTION_NEXT_SYNC))
-                }
+                (0 until framesCount)
+                        .map { retriever.getFrameAtTime((it * framesInterval * 1000).toLong(), MediaMetadataRetriever.OPTION_CLOSEST) }
+                        .filter { it != null }
+                        .forEach { emitter.onNext(it) }
                 emitter.onComplete()
             } finally {
                 retriever.release()

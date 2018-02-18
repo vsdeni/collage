@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="record_button_size">75dp</dimen>
-    <dimen name="record_button_stop_padding">23dp</dimen>
+    <dimen name="record_button_stop_padding">25dp</dimen>
     <dimen name="record_button_start_padding">28dp</dimen>
 </resources>

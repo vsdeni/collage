@@ -21,7 +21,7 @@
     <string name="screen_filter_subtitle">Step 3/4</string>
     <string name="screen_browse_title">Browse and Share!</string>
     <string name="screen_browse_subtitle">Step 4/4</string>
-    <string name="error_no_video">No video recorded</string>
+    <string name="error_no_frames">Not enough frames for creating a collage. Please record a new video</string>
 
     <string name="permission_rationale_camera">Camera access is required to display the camera preview</string>
     <string name="permission_rationale_storage">Storage access is required to save frames for a collage</string>
