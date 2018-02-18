@@ -7,16 +7,16 @@ import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.FileNotFoundException
 
 
-class ValidateVideoInteractor(
+class ValidateFramesInteractor(
         private val settingsRepository: SettingsRepository,
         private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<UseCase.None>() {
 
     override fun build(params: None?): Completable {
         return settingsRepository
-                .getFileToSaveVideo()
-                .flatMapCompletable({ file ->
+                .getDirToSaveFrames()
+                .flatMapCompletable({ dir ->
                     Completable.create({ emitter ->
-                        if (file.exists()) {
+                        if (dir.exists() && dir.list().isNotEmpty()) {
                             emitter.onComplete()
                         } else {
                             emitter.onError(FileNotFoundException())

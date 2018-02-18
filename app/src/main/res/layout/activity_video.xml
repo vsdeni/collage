@@ -12,25 +12,30 @@
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar"
+        android:background="@color/black" />
 
-    <Button
+    <ImageView
         android:id="@+id/start_recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text="Start" />
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/start_record"
+        android:visibility="invisible" />
 
-    <Button
+    <ImageView
         android:id="@+id/stop_recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/start_recording"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_toRightOf="@id/start_recording"
-        android:text="Stop" />
+        android:layout_alignTop="@id/start_recording"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/stop_record"
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:id="@+id/placeholder_no_access"

@@ -34,14 +34,15 @@ class CollageDataSource(private val context: Context,
 
     override fun saveFrames(images: List<Bitmap>): Completable {
         return settingsRepository.getDirToSaveFrames()
-                .flatMapCompletable({ dir ->
-                    Completable.fromCallable({
+                .flatMapObservable({ dir ->
+                    Completable.fromAction({
                         dir.deleteRecursively()
                         dir.mkdirs()
-                        for (frame in images) {
-                            convertBitmapToFile(File(dir, System.currentTimeMillis().toString()), frame)
-                        }
-                    })
+                    }).andThen(Observable.fromIterable(images)
+                            .map { Pair(it, File(dir, System.currentTimeMillis().toString())) })
+                })
+                .flatMapCompletable({ frame ->
+                    convertBitmapToFile(frame.second, frame.first)
                 })
     }
 
@@ -87,6 +88,7 @@ class CollageDataSource(private val context: Context,
         return settingsRepository
                 .getFileToSaveCollage()
                 .flatMap({ file ->
+                    file.delete()
                     convertBitmapToFile(file, bitmap)
                             .andThen(Single.just(Uri.fromFile(file)))
                 })
@@ -95,9 +97,6 @@ class CollageDataSource(private val context: Context,
 
     private fun convertBitmapToFile(file: File, bitmap: Bitmap): Completable {//TODO
         return Completable.fromCallable({
-
-            file.delete()
-
             val bos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
             val fos = FileOutputStream(file)

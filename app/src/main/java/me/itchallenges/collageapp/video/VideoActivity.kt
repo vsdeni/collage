@@ -46,7 +46,7 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
                 StartCapturingVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
                 StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(
                         getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
-                ValidateVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
+                ValidateFramesInteractor(SettingsDataSource(this), ThreadScheduler()),
                 windowManager,
                 MediaRecorder())
 
@@ -148,6 +148,22 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
         val uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
         startActivity(intent)
+    }
+
+    override fun setStartCaptureButtonVisible(visible: Boolean) {
+        start_recording.visibility = if (visible) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
+    }
+
+    override fun setStopCaptureButtonVisible(visible: Boolean) {
+        stop_recording.visibility = if (visible) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
     }
 
     companion object {

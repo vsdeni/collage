@@ -15,7 +15,7 @@ class VideoScreenPresenter(private val view: VideoScreenView,
                            private val releaseCameraInteractor: ReleaseCameraInteractor,
                            private val startCapturingVideoInteractor: StartCapturingVideoInteractor,
                            private val stopCapturingVideoInteractor: StopCapturingVideoInteractor,
-                           private val validateVideoInteractor: ValidateVideoInteractor,
+                           private val validateFramesInteractor: ValidateFramesInteractor,
                            private val windowManager: WindowManager,
                            private var mediaRecorder: MediaRecorder? = null) : LifecycleObserver {
 
@@ -24,6 +24,7 @@ class VideoScreenPresenter(private val view: VideoScreenView,
         if (view.isAccessGranted(Manifest.permission.CAMERA)) {
             previewCameraInteractor
                     .execute({
+                        changeRecordingButtonsMode(false)
                         view.startCameraPreview(it)
                     }, {
                         it.printStackTrace()
@@ -46,6 +47,7 @@ class VideoScreenPresenter(private val view: VideoScreenView,
     }
 
     fun onStartRecordingClicked() {
+        changeRecordingButtonsMode(true)
         startCapturingVideoInteractor
                 .execute({}, {
                     it.printStackTrace()
@@ -56,6 +58,18 @@ class VideoScreenPresenter(private val view: VideoScreenView,
                     }
                 }, StartCapturingVideoInteractor.Params(view.getPreviewCamera()!!,
                         getMediaRecorder()))
+    }
+
+    fun onStopRecordingClicked() {
+        changeRecordingButtonsMode(false)
+        stopCapturingVideoInteractor
+                .execute({
+                    mediaRecorder = null
+                }, {
+                    mediaRecorder = null
+                    it.printStackTrace()
+                    view.showMessage(view.context().getString(R.string.error_camera_init))//TODO
+                }, StopCapturingVideoInteractor.Params(mediaRecorder!!))
     }
 
     private fun requestCameraPermission() {
@@ -80,19 +94,8 @@ class VideoScreenPresenter(private val view: VideoScreenView,
         return mediaRecorder!!
     }
 
-    fun onStopRecordingClicked() {
-        stopCapturingVideoInteractor
-                .execute({
-                    mediaRecorder = null
-                }, {
-                    mediaRecorder = null
-                    it.printStackTrace()
-                    view.showMessage(view.context().getString(R.string.error_camera_init))//TODO
-                }, StopCapturingVideoInteractor.Params(mediaRecorder!!))
-    }
-
     fun onNavigateNextClicked() {
-        validateVideoInteractor
+        validateFramesInteractor
                 .execute({
                     view.navigateNext()
                 }, {
@@ -115,5 +118,10 @@ class VideoScreenPresenter(private val view: VideoScreenView,
         } else {
             view.openAppPermissionSettings()
         }
+    }
+
+    private fun changeRecordingButtonsMode(isRecording: Boolean) {
+        view.setStartCaptureButtonVisible(!isRecording)
+        view.setStopCaptureButtonVisible(isRecording)
     }
 }
