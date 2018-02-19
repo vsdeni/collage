@@ -1,6 +1,8 @@
 [
    {
       "name":"fuzzy-eureka",
+      "height":10,
+      "width":10,
       "positions":[
          {
             "x":0,
@@ -36,6 +38,8 @@
    },
    {
       "name":"octo-adventure",
+      "height":10,
+      "width":10,
       "positions":[
          {
             "x":0,
@@ -71,6 +75,8 @@
    },
    {
       "name":"laughing-enigma",
+      "height":10,
+      "width":10,
       "positions":[
          {
             "x":0,
@@ -106,6 +112,8 @@
    },
    {
       "name":"cautious-barnacle",
+      "height":10,
+      "width":10,
       "positions":[
          {
             "x":0,
@@ -135,6 +143,8 @@
    },
    {
       "name":"musical-dollop",
+      "height":10,
+      "width":10,
       "positions":[
          {
             "x":0,

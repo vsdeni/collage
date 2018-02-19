@@ -1,7 +1,7 @@
 package me.itchallenges.collageapp.settings
 
 import io.reactivex.Single
-import me.itchallenges.collageapp.pattern.PreviewParams
+import me.itchallenges.collageapp.pattern.ImageParams
 import java.io.File
 
 
@@ -18,7 +18,7 @@ interface SettingsRepository {
 
     fun getCollageImagesCount(): Single<Int>
 
-    fun getPatternPreviewParams(): Single<PreviewParams>
+    fun getPatternPreviewParams(): Single<ImageParams>
 
-    fun getCollageImageParams(): Single<PreviewParams>
+    fun getCollageImageParams(): Single<ImageParams>
 }
