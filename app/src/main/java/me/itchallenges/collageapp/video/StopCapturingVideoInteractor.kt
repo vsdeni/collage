@@ -1,6 +1,7 @@
 package me.itchallenges.collageapp.video
 
 import android.graphics.Bitmap
+import android.hardware.Camera
 import android.media.MediaMetadataRetriever
 import android.media.MediaRecorder
 import io.reactivex.Completable
@@ -8,10 +9,12 @@ import io.reactivex.Observable
 import me.itchallenges.collageapp.collage.CollageRepository
 import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
 import me.itchallenges.collageapp.framework.interactor.UseCase
+import me.itchallenges.collageapp.framework.rotate
 import me.itchallenges.collageapp.framework.stopAndRelease
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
 import javax.inject.Inject
+
 
 class StopCapturingVideoInteractor
 @Inject constructor(private val settingsRepository: SettingsRepository,
@@ -27,7 +30,7 @@ class StopCapturingVideoInteractor
                 settingsRepository.getCollageImagesCount().map { Pair(fileToSave, it) }
             })
                     .flatMap({ settings ->
-                        splitVideoToFrames(settings.first, MediaMetadataRetriever(), settings.second)
+                        splitVideoToFrames(settings.first, MediaMetadataRetriever(), settings.second, params.camera!!)
                                 .toList()
                     })
                     .flatMapCompletable({ saveFrames(it) })
@@ -40,7 +43,7 @@ class StopCapturingVideoInteractor
         })
     }
 
-    private fun splitVideoToFrames(videoFile: File, retriever: MediaMetadataRetriever, framesCount: Int): Observable<Bitmap> {
+    private fun splitVideoToFrames(videoFile: File, retriever: MediaMetadataRetriever, framesCount: Int, camera: Camera): Observable<Bitmap> {
         return Observable.create({ emitter ->
             try {
                 retriever.setDataSource(videoFile.path)
@@ -49,6 +52,7 @@ class StopCapturingVideoInteractor
                 (0 until framesCount)
                         .map { retriever.getFrameAtTime((it * framesInterval * 1000).toLong(), MediaMetadataRetriever.OPTION_CLOSEST) }
                         .filter { it != null }
+                        //.map { rotate(it, camera.parameters.getInt("rotation")) }
                         .forEach { emitter.onNext(it) }
                 emitter.onComplete()
             } finally {
@@ -57,9 +61,13 @@ class StopCapturingVideoInteractor
         })
     }
 
+    private fun rotate(bitmap: Bitmap, degrees: Int): Bitmap {
+        return bitmap.rotate(degrees)
+    }
+
     private fun saveFrames(frames: List<Bitmap>): Completable =
             collageRepository
                     .saveFrames(frames)
 
-    data class Params(val mediaRecorder: MediaRecorder)
+    data class Params(val mediaRecorder: MediaRecorder, val camera: Camera?)
 }

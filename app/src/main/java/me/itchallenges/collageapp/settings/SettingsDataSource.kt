@@ -11,6 +11,10 @@ import java.io.File
 
 class SettingsDataSource(val context: Context) : SettingsRepository {
 
+    override fun getCameraId(): Single<Int> {
+        return Single.just(0)
+    }
+
     override fun getFileToSaveVideo(): Single<File> =
             Single.just(File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_MOVIES), "video"))

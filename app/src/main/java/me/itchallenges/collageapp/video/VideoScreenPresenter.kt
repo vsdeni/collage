@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 class VideoScreenPresenter
-@Inject constructor(private val previewCameraInteractor: PreviewCameraInteractor,
+@Inject constructor(private val prepareCameraInteractor: PrepareCameraInteractor,
                     private val releaseCameraInteractor: ReleaseCameraInteractor,
                     private val startCapturingVideoInteractor: StartCapturingVideoInteractor,
                     private val stopCapturingVideoInteractor: StopCapturingVideoInteractor,
@@ -25,14 +25,14 @@ class VideoScreenPresenter
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun startCameraPreview() {
         if (view.isAccessGranted(Manifest.permission.CAMERA)) {
-            previewCameraInteractor
+            prepareCameraInteractor
                     .execute({
                         changeRecordingButtonsMode(false)
                         view.startCameraPreview(it)
                     }, {
                         it.printStackTrace()
                         view.showMessage(view.context().getString(R.string.error_camera_init))
-                    }, PreviewCameraInteractor.Params(windowManager))
+                    }, PrepareCameraInteractor.Params(view.getWindowRotation()))
         } else {
             requestCameraPermission()
         }
@@ -62,7 +62,7 @@ class VideoScreenPresenter
                         view.showMessage(view.context().getString(R.string.error_camera_init))
                     }
                 }, StartCapturingVideoInteractor.Params(view.getPreviewCamera()!!,
-                        getMediaRecorder()))
+                        getMediaRecorder(), view.getWindowRotation()))
     }
 
     fun onStopRecordingClicked() {
@@ -78,7 +78,7 @@ class VideoScreenPresenter
                     mediaRecorder = null
                     it.printStackTrace()
                     view.showMessage(view.context().getString(R.string.error_video_saving))
-                }, StopCapturingVideoInteractor.Params(mediaRecorder!!))
+                }, StopCapturingVideoInteractor.Params(mediaRecorder!!, view.getPreviewCamera()))
     }
 
     private fun requestCameraPermission() {

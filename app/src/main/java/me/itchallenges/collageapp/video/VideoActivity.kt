@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.Surface
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_video.*
@@ -65,6 +66,19 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
 
     override fun getPreviewCamera(): Camera? =
             camera
+
+    override fun getWindowRotation(): Int {
+        val rotation: Int = windowManager.defaultDisplay.rotation
+        var degrees = 0
+
+        when (rotation) {
+            Surface.ROTATION_0 -> degrees = 0
+            Surface.ROTATION_90 -> degrees = 90
+            Surface.ROTATION_180 -> degrees = 180
+            Surface.ROTATION_270 -> degrees = 270
+        }
+        return degrees
+    }
 
     override fun startCameraPreview(camera: Camera) {
         placeholder_no_access.visibility = View.GONE

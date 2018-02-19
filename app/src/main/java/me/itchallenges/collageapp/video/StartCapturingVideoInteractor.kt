@@ -4,6 +4,7 @@ import android.hardware.Camera
 import android.media.MediaRecorder
 import io.reactivex.Completable
 import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
+import me.itchallenges.collageapp.framework.getRotation
 import me.itchallenges.collageapp.framework.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
@@ -17,13 +18,21 @@ class StartCapturingVideoInteractor
 
     override fun build(params: Params?): Completable =
             settingsRepository
-                    .getFileToSaveVideo()
+                    .getCameraId()
+                    .flatMap({ cameraId ->
+                        settingsRepository
+                                .getFileToSaveVideo().map { file -> Pair(cameraId, file) }
+                    })
                     .compose(scheduler.highPrioritySingle())
-                    .flatMapCompletable({ startRecording(params!!.camera, params.recorder, it) })
+                    .flatMapCompletable({ settings ->
+                        startRecording(params!!.camera, params.recorder, params.windowRotation, settings.first, settings.second)
+                    })
                     .compose(scheduler.highPriorityCompletable())
 
-    private fun startRecording(camera: Camera, recorder: MediaRecorder, file: File): Completable =
+    private fun startRecording(camera: Camera, recorder: MediaRecorder, windowRotation: Int, cameraId: Int, file: File): Completable =
             Completable.fromCallable({
+
+                recorder.setOrientationHint(camera.getRotation(windowRotation, cameraId))
 
                 file.mkdirs()
 
@@ -45,5 +54,5 @@ class StartCapturingVideoInteractor
                 recorder.start()
             })
 
-    data class Params(val camera: Camera, val recorder: MediaRecorder)
+    data class Params(val camera: Camera, val recorder: MediaRecorder, val windowRotation: Int)
 }

@@ -9,6 +9,8 @@ interface VideoScreenView : BaseScreenView, PermissionScreenView {
 
     fun getPreviewCamera(): Camera?
 
+    fun getWindowRotation(): Int
+
     fun startCameraPreview(camera: Camera)
 
     fun stopCameraPreview()

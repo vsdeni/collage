@@ -6,6 +6,8 @@ import java.io.File
 
 
 interface SettingsRepository {
+    fun getCameraId(): Single<Int>
+
     fun getFileToSaveVideo(): Single<File>
 
     fun getDirToSaveFrames(): Single<File>
