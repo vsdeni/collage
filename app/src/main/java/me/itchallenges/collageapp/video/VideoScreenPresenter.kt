@@ -77,7 +77,7 @@ class VideoScreenPresenter
                     changeRecordingButtonsMode(false)
                     mediaRecorder = null
                     it.printStackTrace()
-                    view.showMessage(view.context().getString(R.string.error_camera_init))//TODO
+                    view.showMessage(view.context().getString(R.string.error_video_saving))
                 }, StopCapturingVideoInteractor.Params(mediaRecorder!!))
     }
 
@@ -111,8 +111,7 @@ class VideoScreenPresenter
                     view.navigateNext()
                 }, {
                     view.hideLoader()
-                    view.showMessage(it.message
-                            ?: view.context().getString(R.string.error_no_frames))
+                    view.showMessage(view.context().getString(R.string.error_no_frames))
                 })
     }
 

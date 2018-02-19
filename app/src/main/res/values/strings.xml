@@ -30,5 +30,10 @@
     <string name="send_to">Send to</string>
     <string name="hint_browse_message">Write a caption</string>
     <string name="error_frames_loading">Error: Frames can\'t be loaded. Please try to record a new video</string>
-    <string name="error_filter_saving">Error: The pattern can\'t be saved</string>
+    <string name="error_pattern_saving">Error: The pattern can\'t be saved</string>
+    <string name="error_filter_loading">Error: Filters can\'t be loaded</string>
+    <string name="error_filter_saving">Error: The filters can\'t be saved</string>
+    <string name="error_video_saving">Error: The video can\'t be processed</string>
+    <string name="error_collage_loading">Error: Collage can\'t be loaded</string>
+    <string name="error_collage_sharing">Error: Collage can\'t be shared</string>
 </resources>

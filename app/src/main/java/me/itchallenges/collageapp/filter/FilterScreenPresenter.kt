@@ -3,6 +3,7 @@ package me.itchallenges.collageapp.filter
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import me.itchallenges.collageapp.R
 import javax.inject.Inject
 
 
@@ -25,6 +26,7 @@ class FilterScreenPresenter
                 else -> view.showFiltersPicker(filters, Filter.NONE)
             }
         }, {
+            view.showMessage(view.context().getString(R.string.error_filter_loading))
             view.hideLoader()
             it.printStackTrace()
         })
@@ -45,6 +47,7 @@ class FilterScreenPresenter
                     view.hideLoader()
                     view.navigateNext()
                 }, {
+                    view.showMessage(view.context().getString(R.string.error_filter_saving))
                     view.hideLoader()
                     it.printStackTrace()
                 }, SaveImageInteractor.Params(view.getFilteredImages(), view.getAppliedFilters()))

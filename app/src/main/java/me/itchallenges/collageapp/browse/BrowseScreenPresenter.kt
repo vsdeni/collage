@@ -3,6 +3,7 @@ package me.itchallenges.collageapp.browse
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import me.itchallenges.collageapp.R
 import javax.inject.Inject
 
 
@@ -20,6 +21,7 @@ class BrowseScreenPresenter
                     view.hideLoader()
                     view.showCollageImage(image)
                 }, {
+                    view.showMessage(view.context().getString(R.string.error_collage_loading))
                     view.hideLoader()
                     it.printStackTrace()
                     view.showMessage(it.message!!)
@@ -39,7 +41,7 @@ class BrowseScreenPresenter
                 }, {
                     view.hideLoader()
                     it.printStackTrace()
-                    view.showMessage(it.message!!)
+                    view.showMessage(view.context().getString(R.string.error_collage_sharing))
                 }, ShareCollageImageInteractor.Params(view.getCaption()))
     }
 }
