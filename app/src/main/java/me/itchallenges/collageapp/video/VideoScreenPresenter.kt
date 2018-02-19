@@ -24,12 +24,17 @@ class VideoScreenPresenter
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun startCameraPreview() {
+        view.setStopRecordingButtonVisible(false)
+        view.setStartRecordingButtonVisible(false)
         if (view.isAccessGranted(Manifest.permission.CAMERA)) {
             prepareCameraInteractor
                     .execute({
-                        changeRecordingButtonsMode(false)
+                        view.setStopRecordingButtonVisible(false)
+                        view.setStartRecordingButtonVisible(true)
                         view.startCameraPreview(it)
                     }, {
+                        view.setStopRecordingButtonVisible(false)
+                        view.setStartRecordingButtonVisible(false)
                         it.printStackTrace()
                         view.showMessage(view.context().getString(R.string.error_camera_init))
                     }, PrepareCameraInteractor.Params(view.getWindowRotation()))
@@ -51,14 +56,21 @@ class VideoScreenPresenter
     }
 
     fun onStartRecordingClicked() {
+        view.setStopRecordingButtonVisible(false)
+        view.setStartRecordingButtonVisible(false)
         startCapturingVideoInteractor
                 .execute({
-                    changeRecordingButtonsMode(true)
+                    view.setStopRecordingButtonVisible(true)
+                    view.setStartRecordingButtonVisible(false)
                 }, {
                     it.printStackTrace()
                     if (it is SecurityException) {
+                        view.setStopRecordingButtonVisible(false)
+                        view.setStartRecordingButtonVisible(true)
                         requestStoragePermission()
                     } else {
+                        view.setStopRecordingButtonVisible(false)
+                        view.setStartRecordingButtonVisible(false)
                         view.showMessage(view.context().getString(R.string.error_camera_init))
                     }
                 }, StartCapturingVideoInteractor.Params(view.getPreviewCamera()!!,
@@ -67,14 +79,18 @@ class VideoScreenPresenter
 
     fun onStopRecordingClicked() {
         view.showLoader()
+        view.setStopRecordingButtonVisible(false)
+        view.setStartRecordingButtonVisible(false)
         stopCapturingVideoInteractor
                 .execute({
-                    changeRecordingButtonsMode(false)
+                    view.setStopRecordingButtonVisible(false)
+                    view.setStartRecordingButtonVisible(true)
                     mediaRecorder = null
                     view.hideLoader()
                 }, {
                     view.hideLoader()
-                    changeRecordingButtonsMode(false)
+                    view.setStopRecordingButtonVisible(false)
+                    view.setStartRecordingButtonVisible(true)
                     mediaRecorder = null
                     it.printStackTrace()
                     view.showMessage(view.context().getString(R.string.error_video_saving))
@@ -129,10 +145,5 @@ class VideoScreenPresenter
         } else {
             view.openAppPermissionSettings()
         }
-    }
-
-    private fun changeRecordingButtonsMode(isRecording: Boolean) {
-        view.setStartCaptureButtonVisible(!isRecording)
-        view.setStopCaptureButtonVisible(isRecording)
     }
 }

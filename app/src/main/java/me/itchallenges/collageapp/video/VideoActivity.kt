@@ -172,7 +172,7 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
         startActivity(intent)
     }
 
-    override fun setStartCaptureButtonVisible(visible: Boolean) {
+    override fun setStartRecordingButtonVisible(visible: Boolean) {
         start_recording.visibility = if (visible) {
             View.VISIBLE
         } else {
@@ -180,7 +180,7 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
         }
     }
 
-    override fun setStopCaptureButtonVisible(visible: Boolean) {
+    override fun setStopRecordingButtonVisible(visible: Boolean) {
         stop_recording.visibility = if (visible) {
             View.VISIBLE
         } else {

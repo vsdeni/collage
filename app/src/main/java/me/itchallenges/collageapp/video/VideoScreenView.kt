@@ -15,7 +15,7 @@ interface VideoScreenView : BaseScreenView, PermissionScreenView {
 
     fun stopCameraPreview()
 
-    fun setStartCaptureButtonVisible(visible: Boolean)
+    fun setStartRecordingButtonVisible(visible: Boolean)
 
-    fun setStopCaptureButtonVisible(visible: Boolean)
+    fun setStopRecordingButtonVisible(visible: Boolean)
 }
