@@ -27,7 +27,7 @@ class CameraPreview(context: Context, private val camera: Camera) : SurfaceView(
 
         // stop preview before making changes
         try {
-            camera.stopPreview();
+            camera.stopPreview()
         } catch (e: Exception) {
             // ignore: tried to stop a non-existent preview
         }

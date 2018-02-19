@@ -9,7 +9,6 @@ import io.reactivex.Observable
 import me.itchallenges.collageapp.collage.CollageRepository
 import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
 import me.itchallenges.collageapp.framework.interactor.UseCase
-import me.itchallenges.collageapp.framework.rotate
 import me.itchallenges.collageapp.framework.stopAndRelease
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
@@ -29,11 +28,12 @@ class StopCapturingVideoInteractor
                     ).flatMap({ fileToSave ->
                 settingsRepository.getCollageImagesCount().map { Pair(fileToSave, it) }
             })
-                    .flatMap({ settings ->
+                    .flatMapCompletable({ settings ->
                         splitVideoToFrames(settings.first, MediaMetadataRetriever(), settings.second, params.camera!!)
                                 .toList()
+                                .flatMapCompletable({ saveFrames(it) })
+                                .andThen(removeVideo(settings.first))
                     })
-                    .flatMapCompletable({ saveFrames(it) })
                     .compose(scheduler.highPriorityCompletable())
 
 
@@ -52,7 +52,6 @@ class StopCapturingVideoInteractor
                 (0 until framesCount)
                         .map { retriever.getFrameAtTime((it * framesInterval * 1000).toLong(), MediaMetadataRetriever.OPTION_CLOSEST) }
                         .filter { it != null }
-                        //.map { rotate(it, camera.parameters.getInt("rotation")) }
                         .forEach { emitter.onNext(it) }
                 emitter.onComplete()
             } finally {
@@ -61,13 +60,15 @@ class StopCapturingVideoInteractor
         })
     }
 
-    private fun rotate(bitmap: Bitmap, degrees: Int): Bitmap {
-        return bitmap.rotate(degrees)
-    }
-
     private fun saveFrames(frames: List<Bitmap>): Completable =
             collageRepository
                     .saveFrames(frames)
+
+    private fun removeVideo(videoFile: File): Completable =
+            Completable.fromCallable({
+                videoFile.delete()
+            })
+
 
     data class Params(val mediaRecorder: MediaRecorder, val camera: Camera?)
 }
