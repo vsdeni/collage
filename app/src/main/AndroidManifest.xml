@@ -23,7 +23,8 @@
 
         <activity
             android:name=".pattern.PatternActivity"
-            android:parentActivityName=".video.VideoActivity">
+            android:parentActivityName=".video.VideoActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".video.VideoActivity" />
@@ -31,7 +32,8 @@
 
         <activity
             android:name=".filter.FilterActivity"
-            android:parentActivityName=".pattern.PatternActivity">
+            android:parentActivityName=".pattern.PatternActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".pattern.PatternActivity" />
@@ -39,7 +41,8 @@
 
         <activity
             android:name=".browse.BrowseActivity"
-            android:parentActivityName=".browse.BrowseActivity">
+            android:parentActivityName=".browse.BrowseActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".filter.FilterActivity" />
