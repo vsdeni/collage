@@ -35,7 +35,7 @@ class BrowseActivity : AppCompatActivity(), BrowseScreenView {
         presenter = BrowseScreenPresenter(this,
                 GetCollageImageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this)
                         , getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
-                GetCollageImageForSharingInteractor(CollageDataSource(applicationContext, SettingsDataSource(this)
+                ShareCollageImageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this)
                         , getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()))
 
         share.setOnClickListener({ presenter.onShareClicked() })
@@ -86,13 +86,7 @@ class BrowseActivity : AppCompatActivity(), BrowseScreenView {
     override fun context(): Context =
             this
 
-    override fun shareCollageImage(image: Uri, message: String) {
-        val shareIntent = Intent()
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_STREAM, image)
-        shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-        shareIntent.type = "image/jpeg"
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        startActivity(Intent.createChooser(shareIntent, resources.getText(R.string.send_to)))
+    override fun showShareDialog(intent: Intent) {
+        startActivity(Intent.createChooser(intent, resources.getText(R.string.send_to)))
     }
 }

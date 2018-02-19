@@ -7,7 +7,7 @@ import android.arch.lifecycle.OnLifecycleEvent
 
 class BrowseScreenPresenter(private val view: BrowseScreenView,
                             private val getCollageImageInteractor: GetCollageImageInteractor,
-                            private val getCollageImageForSharingInteractor: GetCollageImageForSharingInteractor) : LifecycleObserver {
+                            private val shareCollageImageInteractor: ShareCollageImageInteractor) : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadCollage() {
@@ -23,12 +23,12 @@ class BrowseScreenPresenter(private val view: BrowseScreenView,
     }
 
     fun onShareClicked() {
-        getCollageImageForSharingInteractor
-                .execute({ image ->
-                    view.shareCollageImage(image, view.getCaption())
+        shareCollageImageInteractor
+                .execute({
+                    view.showShareDialog(it)
                 }, {
                     it.printStackTrace()
                     view.showMessage(it.message!!)
-                })
+                }, ShareCollageImageInteractor.Params(view.getCaption()))
     }
 }
