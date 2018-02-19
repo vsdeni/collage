@@ -9,10 +9,10 @@ import dagger.Provides
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageRepository
-import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
-import me.itchallenges.collageapp.framework.executor.ThreadScheduler
 import me.itchallenges.collageapp.filter.FilterDataSource
 import me.itchallenges.collageapp.filter.FilterRepository
+import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
+import me.itchallenges.collageapp.framework.executor.ThreadScheduler
 import me.itchallenges.collageapp.pattern.PatternDataSource
 import me.itchallenges.collageapp.pattern.PatternRepository
 import me.itchallenges.collageapp.settings.SettingsDataSource
@@ -53,8 +53,8 @@ class AppModule(private val appContext: Context) {
 
     @Provides
     @Singleton
-    fun providePatternRepository(context: Context, gson: Gson): PatternRepository =
-            PatternDataSource(context, gson)
+    fun providePatternRepository(context: Context, settingsRepository: SettingsRepository, gson: Gson): PatternRepository =
+            PatternDataSource(context, settingsRepository, gson)
 
     @Provides
     @Singleton

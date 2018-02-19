@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4
 import com.google.gson.Gson
 import me.itchallenges.collageapp.pattern.Pattern
 import me.itchallenges.collageapp.pattern.PatternDataSource
+import me.itchallenges.collageapp.settings.SettingsDataSource
 import org.junit.Assert
 import org.junit.BeforeClass
 import org.junit.Test
@@ -19,13 +20,13 @@ import org.junit.runner.RunWith
 class PatternsDataSourceInstrumentedTest {
 
     companion object {
-        private lateinit var patterns: Array<Pattern>
+        private lateinit var patterns: List<Pattern>
         @BeforeClass
         @JvmStatic
         fun setUp() {
             val appContext = InstrumentationRegistry.getTargetContext()
-            patterns = PatternDataSource(appContext, Gson())
-                    .getPatterns()
+            patterns = PatternDataSource(appContext, SettingsDataSource(appContext), Gson())
+                    .getPatterns(5)
                     .blockingGet()
         }
     }

@@ -1,8 +1,11 @@
 package me.itchallenges.collageapp.settings
 
 import android.content.Context
+import android.graphics.Paint
 import android.os.Environment
 import io.reactivex.Single
+import me.itchallenges.collageapp.R
+import me.itchallenges.collageapp.pattern.PreviewParams
 import java.io.File
 
 
@@ -15,6 +18,9 @@ class SettingsDataSource(val context: Context) : SettingsRepository {
     override fun getDirToSaveFrames(): Single<File> =
             Single.just(File(context.filesDir, "frames/"))
 
+    override fun getCacheDir(): Single<File> =
+            Single.just(context.cacheDir)
+
     override fun getCollageImagesCount(): Single<Int> =
             Single.just(5)
 
@@ -24,5 +30,21 @@ class SettingsDataSource(val context: Context) : SettingsRepository {
 
     override fun getFinalCollageImageSize(): Single<Int> {
         return Single.just(800)
+    }
+
+    override fun getPatternPreviewParams(): Single<PreviewParams> {
+        return Single.fromCallable<PreviewParams>({
+
+            val strokePaint = Paint()
+            strokePaint.color = context.resources.getColor(R.color.darkerGray)
+            strokePaint.style = Paint.Style.STROKE
+            strokePaint.strokeWidth = 2.toFloat()
+
+            val fillPaint = Paint()
+            fillPaint.style = Paint.Style.FILL
+            fillPaint.color = context.resources.getColor(R.color.lightGray)
+
+            PreviewParams(150, 150, fillPaint, strokePaint)
+        })
     }
 }

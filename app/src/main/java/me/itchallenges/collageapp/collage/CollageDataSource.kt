@@ -10,11 +10,10 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import me.itchallenges.collageapp.filter.Filter
+import me.itchallenges.collageapp.framework.convertToFile
 import me.itchallenges.collageapp.pattern.Pattern
 import me.itchallenges.collageapp.settings.SettingsRepository
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 
 
 class CollageDataSource(private val context: Context,
@@ -42,7 +41,9 @@ class CollageDataSource(private val context: Context,
                             .map { Pair(it, File(dir, System.currentTimeMillis().toString())) })
                 })
                 .flatMapCompletable({ frame ->
-                    convertBitmapToFile(frame.second, frame.first)
+                    Completable.fromCallable({
+                        frame.first.convertToFile(frame.second)
+                    })
                 })
     }
 
@@ -89,21 +90,10 @@ class CollageDataSource(private val context: Context,
                 .getFileToSaveCollage()
                 .flatMap({ file ->
                     file.delete()
-                    convertBitmapToFile(file, bitmap)
+                    Completable.fromCallable({ bitmap.convertToFile(file) })
                             .andThen(Single.just(Uri.fromFile(file)))
                 })
 
-    }
-
-    private fun convertBitmapToFile(file: File, bitmap: Bitmap): Completable {//TODO
-        return Completable.fromCallable({
-            val bos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
-            val fos = FileOutputStream(file)
-            fos.write(bos.toByteArray())
-            fos.flush()
-            fos.close()
-        })
     }
 
     override fun getCollageImage(): Single<Uri> {
