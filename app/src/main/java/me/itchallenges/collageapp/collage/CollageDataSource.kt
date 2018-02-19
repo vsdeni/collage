@@ -96,6 +96,20 @@ class CollageDataSource(private val context: Context,
 
     }
 
+    override fun saveCollageImage(bitmaps: Array<Bitmap>, pattern: Pattern): Single<Uri> {
+        return settingsRepository.getCollageImageParams()
+                .flatMap({ params ->
+                    settingsRepository.getFileToSaveCollage()
+                            .map { Pair(params, it) }
+                }).flatMap({ settings ->
+            Completable.fromCallable({
+                val bitmap = pattern.drawCollage(settings.first, bitmaps)
+                bitmap.convertToFile(settings.second)
+            })
+                    .andThen(Single.just(Uri.fromFile(settings.second)))
+        })
+    }
+
     override fun getCollageImage(): Single<Uri> {
         return settingsRepository
                 .getFileToSaveCollage()

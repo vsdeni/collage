@@ -16,8 +16,7 @@ interface SettingsRepository {
 
     fun getCollageImagesCount(): Single<Int>
 
-    //only 1 value since collage is square
-    fun getFinalCollageImageSize(): Single<Int>
-
     fun getPatternPreviewParams(): Single<PreviewParams>
+
+    fun getCollageImageParams(): Single<PreviewParams>
 }

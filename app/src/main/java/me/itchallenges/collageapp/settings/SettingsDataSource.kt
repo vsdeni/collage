@@ -28,10 +28,6 @@ class SettingsDataSource(val context: Context) : SettingsRepository {
             Single.just(File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), "collage.jpg"))
 
-    override fun getFinalCollageImageSize(): Single<Int> {
-        return Single.just(800)
-    }
-
     override fun getPatternPreviewParams(): Single<PreviewParams> {
         return Single.fromCallable<PreviewParams>({
 
@@ -45,6 +41,22 @@ class SettingsDataSource(val context: Context) : SettingsRepository {
             fillPaint.color = context.resources.getColor(R.color.lightGray)
 
             PreviewParams(150, 150, fillPaint, strokePaint)
+        })
+    }
+
+    override fun getCollageImageParams(): Single<PreviewParams> {
+        return Single.fromCallable<PreviewParams>({
+
+            val strokePaint = Paint()
+            strokePaint.color = context.resources.getColor(R.color.white)
+            strokePaint.style = Paint.Style.STROKE
+            strokePaint.strokeWidth = 2.toFloat()
+
+            val fillPaint = Paint()
+            fillPaint.style = Paint.Style.FILL
+            fillPaint.color = context.resources.getColor(R.color.lightGray)
+
+            PreviewParams(800, 800, fillPaint, strokePaint)
         })
     }
 }
