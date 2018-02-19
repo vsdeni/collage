@@ -1,4 +1,4 @@
-package me.itchallenges.collageapp.extentions
+package me.itchallenges.collageapp.framework
 
 import android.media.MediaRecorder
 

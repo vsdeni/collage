@@ -1,4 +1,4 @@
-package me.itchallenges.collageapp.common.interactor
+package me.itchallenges.collageapp.framework.interactor
 
 import io.reactivex.observers.DisposableMaybeObserver
 import io.reactivex.observers.DisposableObserver

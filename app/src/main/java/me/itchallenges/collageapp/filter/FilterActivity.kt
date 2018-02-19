@@ -29,15 +29,18 @@ class FilterActivity : AppCompatActivity(), FilterScreenView {
     @Inject
     lateinit var presenter: FilterScreenPresenter
 
+    private var menuNext: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
+        Injector.INSTANCE.appComponent.inject(this)
+
         initPresenter()
         initViews()
     }
 
     private fun initPresenter() {
-        Injector.INSTANCE.appComponent.inject(this)
         presenter.view = this
         lifecycle.addObserver(presenter)
     }
@@ -73,11 +76,17 @@ class FilterActivity : AppCompatActivity(), FilterScreenView {
     }
 
     override fun showLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.setActionView(R.layout.progressbar)
+            it.expandActionView()
+        }
     }
 
     override fun hideLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.collapseActionView()
+            it.actionView = null
+        }
     }
 
     override fun showMessage(message: String) {
@@ -90,6 +99,7 @@ class FilterActivity : AppCompatActivity(), FilterScreenView {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.filter_menu, menu)
+        menuNext = menu.findItem(R.id.menu_next)
         return true
     }
 

@@ -14,8 +14,13 @@ class BrowseScreenPresenter
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadCollage() {
+        view.showLoader()
         getCollageImageInteractor
-                .execute({ image -> view.showCollageImage(image) }, {
+                .execute({ image ->
+                    view.hideLoader()
+                    view.showCollageImage(image)
+                }, {
+                    view.hideLoader()
                     it.printStackTrace()
                     view.showMessage(it.message!!)
                 })
@@ -26,10 +31,13 @@ class BrowseScreenPresenter
     }
 
     fun onShareClicked() {
+        view.showLoader()
         shareCollageImageInteractor
                 .execute({
+                    view.hideLoader()
                     view.showShareDialog(it)
                 }, {
+                    view.hideLoader()
                     it.printStackTrace()
                     view.showMessage(it.message!!)
                 }, ShareCollageImageInteractor.Params(view.getCaption()))

@@ -2,7 +2,7 @@ package me.itchallenges.collageapp.browse
 
 import android.content.Intent
 import android.net.Uri
-import me.itchallenges.collageapp.BaseScreenView
+import me.itchallenges.collageapp.framework.view.BaseScreenView
 
 
 interface BrowseScreenView : BaseScreenView {

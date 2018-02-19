@@ -1,7 +1,7 @@
 package me.itchallenges.collageapp.pattern
 
 import android.net.Uri
-import me.itchallenges.collageapp.BaseScreenView
+import me.itchallenges.collageapp.framework.view.BaseScreenView
 
 
 interface PatternScreenView : BaseScreenView {

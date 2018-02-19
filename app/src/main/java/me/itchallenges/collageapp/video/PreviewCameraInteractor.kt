@@ -4,8 +4,8 @@ import android.hardware.Camera
 import android.view.Surface
 import android.view.WindowManager
 import io.reactivex.Single
-import me.itchallenges.collageapp.common.executor.ExecutionScheduler
-import me.itchallenges.collageapp.common.interactor.UseCase
+import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
+import me.itchallenges.collageapp.framework.interactor.UseCase
 import javax.inject.Inject
 
 @Suppress("DEPRECATION")

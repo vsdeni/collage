@@ -1,4 +1,4 @@
-package me.itchallenges.collageapp.common.executor
+package me.itchallenges.collageapp.framework.executor
 
 import io.reactivex.*
 

@@ -15,14 +15,19 @@ class FilterScreenPresenter
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadFilters() {
+        view.showLoader()
         getFiltersInteractor.execute({ filters ->
+            view.hideLoader()
             val checkedFilters = getFiltersAppliedToCheckedCells()
             when {
                 checkedFilters.size > 1 -> view.showFiltersPicker(filters, Filter.NONE)
                 checkedFilters.size == 1 -> view.showFiltersPicker(filters, checkedFilters[0])
                 else -> view.showFiltersPicker(filters, Filter.NONE)
             }
-        }, { it.printStackTrace() })
+        }, {
+            view.hideLoader()
+            it.printStackTrace()
+        })
     }
 
     fun onFilterChanged() {
@@ -34,10 +39,13 @@ class FilterScreenPresenter
     }
 
     fun onNavigateNextClicked() {
+        view.showLoader()
         saveFiltersInteractor
                 .execute({
+                    view.hideLoader()
                     view.navigateNext()
                 }, {
+                    view.hideLoader()
                     it.printStackTrace()
                 }, SaveImageInteractor.Params(view.getFilteredImages(), view.getAppliedFilters()))
     }
@@ -58,8 +66,10 @@ class FilterScreenPresenter
     }
 
     private fun loadCollage() {
+        view.showLoader()
         getFilterCollageInteractor
                 .execute({ collage ->
+                    view.hideLoader()
                     val checked = getChecked(collage.images.size)
                     val filters = getFilters(checked)
                     view.showCollagePreview(
@@ -67,7 +77,10 @@ class FilterScreenPresenter
                             filters,
                             checked)
                 },
-                        { it.printStackTrace() })
+                        {
+                            view.hideLoader()
+                            it.printStackTrace()
+                        })
     }
 
     private fun getChecked(size: Int): BooleanArray {

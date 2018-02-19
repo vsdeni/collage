@@ -22,16 +22,19 @@ class BrowseActivity : AppCompatActivity(), BrowseScreenView {
     @Inject
     lateinit var presenter: BrowseScreenPresenter
 
+    private var menuNext: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
+
+        Injector.INSTANCE.appComponent.inject(this)
 
         initPresenter()
         initViews()
     }
 
     private fun initPresenter() {
-        Injector.INSTANCE.appComponent.inject(this)
         presenter.view = this
         lifecycle.addObserver(presenter)
     }
@@ -47,6 +50,7 @@ class BrowseActivity : AppCompatActivity(), BrowseScreenView {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.browse_menu, menu)
+        menuNext = menu.findItem(R.id.menu_next)
         return true
     }
 
@@ -58,11 +62,17 @@ class BrowseActivity : AppCompatActivity(), BrowseScreenView {
     }
 
     override fun showLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.setActionView(R.layout.progressbar)
+            it.expandActionView()
+        }
     }
 
     override fun hideLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.collapseActionView()
+            it.actionView = null
+        }
     }
 
     override fun showMessage(message: String) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -29,16 +30,19 @@ class PatternActivity : AppCompatActivity(), PatternScreenView {
     @Inject
     lateinit var presenter: PatternScreenPresenter
 
+    private var menuNext: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pattern)
+
+        Injector.INSTANCE.appComponent.inject(this)
 
         initPresenter()
         initViews()
     }
 
     private fun initPresenter() {
-        Injector.INSTANCE.appComponent.inject(this)
         presenter.view = this
         lifecycle.addObserver(presenter)
     }
@@ -49,6 +53,8 @@ class PatternActivity : AppCompatActivity(), PatternScreenView {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setTitle(R.string.screen_pattern_title)
         supportActionBar?.setSubtitle(R.string.screen_pattern_subtitle)
+        supportActionBar?.displayOptions = (ActionBar.DISPLAY_SHOW_HOME
+                or ActionBar.DISPLAY_SHOW_TITLE or ActionBar.DISPLAY_SHOW_CUSTOM)
 
         val layoutManager = CarouselLayoutManager(RecyclerView.HORIZONTAL, true)
         layoutManager.setPostLayoutListener(CarouselZoomPostLayoutListener())
@@ -64,11 +70,17 @@ class PatternActivity : AppCompatActivity(), PatternScreenView {
     }
 
     override fun showLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.setActionView(R.layout.progressbar)
+            it.expandActionView()
+        }
     }
 
     override fun hideLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.collapseActionView()
+            it.actionView = null
+        }
     }
 
     override fun showMessage(message: String) {
@@ -101,6 +113,7 @@ class PatternActivity : AppCompatActivity(), PatternScreenView {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.pattern_menu, menu)
+        menuNext = menu.findItem(R.id.menu_next)
         return true
     }
 

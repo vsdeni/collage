@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
+import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -29,16 +30,19 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
     @Inject
     lateinit var presenter: VideoScreenPresenter
 
+    private var menuNext: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
+
+        Injector.INSTANCE.appComponent.inject(this)
 
         initPresenter()
         initViews()
     }
 
     private fun initPresenter() {
-        Injector.INSTANCE.appComponent.inject(this)
         presenter.view = this
         presenter.windowManager = windowManager
         lifecycle.addObserver(presenter)
@@ -49,6 +53,8 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
         supportActionBar?.setTitle(R.string.screen_video_title)
         supportActionBar?.setSubtitle(R.string.screen_video_subtitle)
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
+        supportActionBar?.displayOptions = (ActionBar.DISPLAY_SHOW_HOME
+                or ActionBar.DISPLAY_SHOW_TITLE or ActionBar.DISPLAY_SHOW_CUSTOM)
         placeholder_no_access.visibility = View.GONE
         start_recording.setOnClickListener { presenter.onStartRecordingClicked() }
         stop_recording.setOnClickListener { presenter.onStopRecordingClicked() }
@@ -56,6 +62,7 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.video_menu, menu)
+        menuNext = menu.findItem(R.id.menu_next)
         return true
     }
 
@@ -84,11 +91,17 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
     }
 
     override fun showLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.setActionView(R.layout.progressbar)
+            it.expandActionView()
+        }
     }
 
     override fun hideLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        menuNext?.let {
+            it.collapseActionView()
+            it.actionView = null
+        }
     }
 
     override fun showMessage(message: String) {

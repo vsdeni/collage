@@ -66,11 +66,14 @@ class VideoScreenPresenter
     }
 
     fun onStopRecordingClicked() {
+        view.showLoader()
         stopCapturingVideoInteractor
                 .execute({
                     changeRecordingButtonsMode(false)
                     mediaRecorder = null
+                    view.hideLoader()
                 }, {
+                    view.hideLoader()
                     changeRecordingButtonsMode(false)
                     mediaRecorder = null
                     it.printStackTrace()
@@ -101,10 +104,13 @@ class VideoScreenPresenter
     }
 
     fun onNavigateNextClicked() {
+        view.showLoader()
         validateFramesInteractor
                 .execute({
+                    view.hideLoader()
                     view.navigateNext()
                 }, {
+                    view.hideLoader()
                     view.showMessage(it.message
                             ?: view.context().getString(R.string.error_no_frames))
                 })

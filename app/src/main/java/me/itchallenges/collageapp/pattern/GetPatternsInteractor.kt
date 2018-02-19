@@ -1,8 +1,8 @@
 package me.itchallenges.collageapp.pattern
 
 import io.reactivex.Single
-import me.itchallenges.collageapp.common.executor.ExecutionScheduler
-import me.itchallenges.collageapp.common.interactor.UseCase
+import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
+import me.itchallenges.collageapp.framework.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
 import javax.inject.Inject
 

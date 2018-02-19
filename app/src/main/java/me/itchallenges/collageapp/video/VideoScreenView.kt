@@ -1,8 +1,8 @@
 package me.itchallenges.collageapp.video
 
 import android.hardware.Camera
-import me.itchallenges.collageapp.BaseScreenView
-import me.itchallenges.collageapp.PermissionScreenView
+import me.itchallenges.collageapp.framework.view.BaseScreenView
+import me.itchallenges.collageapp.framework.view.PermissionScreenView
 
 
 interface VideoScreenView : BaseScreenView, PermissionScreenView {

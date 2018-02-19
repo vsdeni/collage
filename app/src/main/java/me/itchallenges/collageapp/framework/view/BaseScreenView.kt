@@ -1,4 +1,4 @@
-package me.itchallenges.collageapp
+package me.itchallenges.collageapp.framework.view
 
 import android.content.Context
 

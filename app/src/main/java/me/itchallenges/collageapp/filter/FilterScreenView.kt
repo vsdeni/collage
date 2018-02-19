@@ -1,7 +1,7 @@
 package me.itchallenges.collageapp.filter
 
 import android.graphics.Bitmap
-import me.itchallenges.collageapp.BaseScreenView
+import me.itchallenges.collageapp.framework.view.BaseScreenView
 
 
 interface FilterScreenView : BaseScreenView {

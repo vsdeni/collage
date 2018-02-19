@@ -9,8 +9,8 @@ import dagger.Provides
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageRepository
-import me.itchallenges.collageapp.common.executor.ExecutionScheduler
-import me.itchallenges.collageapp.common.executor.ThreadScheduler
+import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
+import me.itchallenges.collageapp.framework.executor.ThreadScheduler
 import me.itchallenges.collageapp.filter.FilterDataSource
 import me.itchallenges.collageapp.filter.FilterRepository
 import me.itchallenges.collageapp.pattern.PatternDataSource

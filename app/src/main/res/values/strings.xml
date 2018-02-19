@@ -29,4 +29,6 @@
 
     <string name="send_to">Send to</string>
     <string name="hint_browse_message">Write a caption</string>
+    <string name="error_frames_loading">Error: Frames can\'t be loaded. Please try to record a new video</string>
+    <string name="error_filter_saving">Error: The pattern can\'t be saved</string>
 </resources>

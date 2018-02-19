@@ -3,9 +3,9 @@ package me.itchallenges.collageapp.video
 import android.hardware.Camera
 import android.media.MediaRecorder
 import io.reactivex.Completable
-import me.itchallenges.collageapp.common.executor.ExecutionScheduler
-import me.itchallenges.collageapp.common.interactor.UseCase
-import me.itchallenges.collageapp.extentions.stopAndRelease
+import me.itchallenges.collageapp.framework.executor.ExecutionScheduler
+import me.itchallenges.collageapp.framework.interactor.UseCase
+import me.itchallenges.collageapp.framework.stopAndRelease
 import javax.inject.Inject
 
 
