@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -53,8 +52,6 @@ class PatternActivity : AppCompatActivity(), PatternScreenView {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setTitle(R.string.screen_pattern_title)
         supportActionBar?.setSubtitle(R.string.screen_pattern_subtitle)
-        supportActionBar?.displayOptions = (ActionBar.DISPLAY_SHOW_HOME
-                or ActionBar.DISPLAY_SHOW_TITLE or ActionBar.DISPLAY_SHOW_CUSTOM)
 
         val layoutManager = CarouselLayoutManager(RecyclerView.HORIZONTAL, true)
         layoutManager.setPostLayoutListener(CarouselZoomPostLayoutListener())

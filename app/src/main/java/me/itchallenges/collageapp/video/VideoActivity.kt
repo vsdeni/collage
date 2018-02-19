@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -53,8 +52,6 @@ class VideoActivity : AppCompatActivity(), VideoScreenView {
         supportActionBar?.setTitle(R.string.screen_video_title)
         supportActionBar?.setSubtitle(R.string.screen_video_subtitle)
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
-        supportActionBar?.displayOptions = (ActionBar.DISPLAY_SHOW_HOME
-                or ActionBar.DISPLAY_SHOW_TITLE or ActionBar.DISPLAY_SHOW_CUSTOM)
         placeholder_no_access.visibility = View.GONE
         start_recording.setOnClickListener { presenter.onStartRecordingClicked() }
         stop_recording.setOnClickListener { presenter.onStopRecordingClicked() }
