@@ -56,7 +56,7 @@ class PatternScreenPresenter
                         view.hideLoader()
                         view.navigateNext()
                     }, {
-                        view.showMessage(view.context().getString(R.string.error_frames_loading))
+                        view.showMessage(view.context().getString(R.string.error_pattern_saving))
                         view.hideLoader()
                         it.printStackTrace()
                     }, SaveSelectedPatternInteractor.Params(it))

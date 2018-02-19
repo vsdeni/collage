@@ -21,8 +21,15 @@ class FilterScreenPresenter
             view.hideLoader()
             val checkedFilters = getFiltersAppliedToCheckedCells()
             when {
-                checkedFilters.size > 1 -> view.showFiltersPicker(filters, Filter.NONE)
-                checkedFilters.size == 1 -> view.showFiltersPicker(filters, checkedFilters[0])
+                checkedFilters.size > 1 -> {
+                    //different filters in the checked cells, all should be discarded in order
+                    //to avoid ambiguity
+                    view.showFiltersPicker(filters, Filter.NONE)
+                }
+                checkedFilters.size == 1 -> {
+                    //only one filter is in the checked cells, nothing should be changed
+                    view.showFiltersPicker(filters, checkedFilters[0])
+                }
                 else -> view.showFiltersPicker(filters, Filter.NONE)
             }
         }, {
@@ -68,13 +75,31 @@ class FilterScreenPresenter
         return checkedFilters
     }
 
+    private fun getFiltersForAllCells(checked: BooleanArray): Array<Filter> {
+        val filters = view.getAppliedFilters()
+        return (if (!filters.isEmpty()) {
+            filters
+        } else {
+            //no filters applied, therefore all are `None` filter
+            Array(checked.size, { Filter.NONE })
+        }).mapIndexed({ index, filter ->
+            if (checked[index]) {
+                //if a cell is checked, the new filter should be applied to it
+                view.getSelectedFilter()
+            } else {
+                //if a cell is not checked, nothing should be changed
+                filter
+            }
+        }).toTypedArray()
+    }
+
     private fun loadCollage() {
         view.showLoader()
         getFilterCollageInteractor
                 .execute({ collage ->
                     view.hideLoader()
                     val checked = getChecked(collage.images.size)
-                    val filters = getFilters(checked)
+                    val filters = getFiltersForAllCells(checked)
                     view.showCollagePreview(
                             collage,
                             filters,
@@ -91,22 +116,7 @@ class FilterScreenPresenter
         return if (!checked.isEmpty()) {
             checked
         } else {
-            BooleanArray(size, { true })//if the array is empty this is initial display, // all should be selected
+            BooleanArray(size, { true })//if the array is empty this is initial display, all should be selected
         }
-    }
-
-    private fun getFilters(checked: BooleanArray): Array<Filter> {//TODO
-        val filters = view.getAppliedFilters()
-        return (if (!filters.isEmpty()) {
-            filters
-        } else {
-            Array(checked.size, { Filter.NONE })
-        }).mapIndexed({ index, filter ->
-            if (checked[index]) {
-                view.getSelectedFilter()
-            } else {
-                filter
-            }
-        }).toTypedArray()
     }
 }
