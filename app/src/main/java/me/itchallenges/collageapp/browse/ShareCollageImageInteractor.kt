@@ -2,10 +2,10 @@ package me.itchallenges.collageapp.browse
 
 import android.content.Intent
 import android.net.Uri
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Single
 import me.itchallenges.collageapp.collage.CollageRepository
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 
 
 class ShareCollageImageInteractor(private val collageRepository: CollageRepository,

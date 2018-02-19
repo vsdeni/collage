@@ -1,8 +1,8 @@
 package me.itchallenges.collageapp.pattern
 
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Single
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
 
 

@@ -1,11 +1,11 @@
 package me.itchallenges.collageapp.filter
 
 import android.graphics.*
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Completable
 import io.reactivex.Single
 import me.itchallenges.collageapp.collage.CollageRepository
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.pattern.Pattern
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.util.*

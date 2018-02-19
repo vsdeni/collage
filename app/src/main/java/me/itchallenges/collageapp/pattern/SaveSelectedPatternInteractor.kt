@@ -1,9 +1,9 @@
 package me.itchallenges.collageapp.pattern
 
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Completable
 import me.itchallenges.collageapp.collage.CollageRepository
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 
 
 class SaveSelectedPatternInteractor(

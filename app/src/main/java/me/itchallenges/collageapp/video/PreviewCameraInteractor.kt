@@ -3,9 +3,9 @@ package me.itchallenges.collageapp.video
 import android.hardware.Camera
 import android.view.Surface
 import android.view.WindowManager
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Single
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 
 @Suppress("DEPRECATION")
 class PreviewCameraInteractor(private val scheduler: ExecutionScheduler) : UseCase.RxSingle<Camera, PreviewCameraInteractor.Params>() {

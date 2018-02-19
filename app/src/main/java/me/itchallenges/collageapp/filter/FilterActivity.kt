@@ -15,12 +15,12 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
 import com.google.gson.Gson
-import com.urancompany.indoorapp.executor.ThreadScheduler
 import kotlinx.android.synthetic.main.activity_filter.*
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.browse.BrowseActivity
 import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
+import me.itchallenges.collageapp.common.executor.ThreadScheduler
 import me.itchallenges.collageapp.pattern.Position
 import me.itchallenges.collageapp.settings.SettingsDataSource
 

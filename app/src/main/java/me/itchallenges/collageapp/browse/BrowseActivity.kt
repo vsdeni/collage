@@ -11,10 +11,10 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import com.urancompany.indoorapp.executor.ThreadScheduler
 import kotlinx.android.synthetic.main.activity_browse.*
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
+import me.itchallenges.collageapp.common.executor.ThreadScheduler
 import me.itchallenges.collageapp.settings.SettingsDataSource
 import me.itchallenges.collageapp.video.VideoActivity
 

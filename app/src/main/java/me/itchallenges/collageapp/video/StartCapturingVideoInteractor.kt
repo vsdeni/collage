@@ -2,9 +2,9 @@ package me.itchallenges.collageapp.video
 
 import android.hardware.Camera
 import android.media.MediaRecorder
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Completable
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
 

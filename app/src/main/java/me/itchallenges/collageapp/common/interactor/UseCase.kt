@@ -1,4 +1,4 @@
-package com.urancompany.indoorapp.interactor
+package me.itchallenges.collageapp.common.interactor
 
 import io.reactivex.*
 import io.reactivex.disposables.CompositeDisposable

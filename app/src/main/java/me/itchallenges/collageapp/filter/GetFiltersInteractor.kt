@@ -1,8 +1,8 @@
 package me.itchallenges.collageapp.filter
 
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Single
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 
 
 class GetFiltersInteractor(private val filtersRepository: FilterRepository,

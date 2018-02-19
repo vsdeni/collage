@@ -1,9 +1,9 @@
 package me.itchallenges.collageapp.video
 
 import android.hardware.Camera
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Completable
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 
 
 class ReleaseCameraInteractor(private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<ReleaseCameraInteractor.Params>() {

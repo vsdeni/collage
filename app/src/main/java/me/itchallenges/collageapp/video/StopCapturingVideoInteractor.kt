@@ -3,11 +3,11 @@ package me.itchallenges.collageapp.video
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.media.MediaRecorder
-import com.urancompany.indoorapp.executor.ExecutionScheduler
-import com.urancompany.indoorapp.interactor.UseCase
 import io.reactivex.Completable
 import io.reactivex.Observable
 import me.itchallenges.collageapp.collage.CollageRepository
+import me.itchallenges.collageapp.common.executor.ExecutionScheduler
+import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
 

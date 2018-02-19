@@ -17,11 +17,11 @@ import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
-import com.urancompany.indoorapp.executor.ThreadScheduler
 import kotlinx.android.synthetic.main.activity_pattern.*
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
+import me.itchallenges.collageapp.common.executor.ThreadScheduler
 import me.itchallenges.collageapp.filter.FilterActivity
 import me.itchallenges.collageapp.settings.SettingsDataSource
 

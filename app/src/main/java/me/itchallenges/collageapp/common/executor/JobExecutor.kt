@@ -1,4 +1,4 @@
-package com.urancompany.indoorapp.executor
+package me.itchallenges.collageapp.common.executor
 
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors

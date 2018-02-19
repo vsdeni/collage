@@ -17,10 +17,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.google.gson.Gson
-import com.urancompany.indoorapp.executor.ThreadScheduler
 import kotlinx.android.synthetic.main.activity_video.*
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.collage.CollageDataSource
+import me.itchallenges.collageapp.common.executor.ThreadScheduler
 import me.itchallenges.collageapp.pattern.PatternActivity
 import me.itchallenges.collageapp.settings.SettingsDataSource
 

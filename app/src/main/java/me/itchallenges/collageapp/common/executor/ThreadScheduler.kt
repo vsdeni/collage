@@ -1,4 +1,4 @@
-package com.urancompany.indoorapp.executor
+package me.itchallenges.collageapp.common.executor
 
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
