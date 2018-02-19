@@ -14,25 +14,35 @@ import android.widget.Toast
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_filter.*
 import me.itchallenges.collageapp.R
 import me.itchallenges.collageapp.browse.BrowseActivity
-import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
-import me.itchallenges.collageapp.common.executor.ThreadScheduler
+import me.itchallenges.collageapp.di.Injector
 import me.itchallenges.collageapp.pattern.Position
-import me.itchallenges.collageapp.settings.SettingsDataSource
+import javax.inject.Inject
 
 
 class FilterActivity : AppCompatActivity(), FilterScreenView {
-    private lateinit var presenter: FilterScreenPresenter
     private var filtersAdapter: FiltersAdapter? = null
+
+    @Inject
+    lateinit var presenter: FilterScreenPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
+        initPresenter()
+        initViews()
+    }
 
+    private fun initPresenter() {
+        Injector.INSTANCE.appComponent.inject(this)
+        presenter.view = this
+        lifecycle.addObserver(presenter)
+    }
+
+    private fun initViews() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -50,15 +60,6 @@ class FilterActivity : AppCompatActivity(), FilterScreenView {
         filter_picker.layoutManager = layoutManager
         filter_picker.setHasFixedSize(true)
         filter_picker.addOnScrollListener(CenterScrollListener())
-
-        presenter = FilterScreenPresenter(this,
-                GetFilterCollageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),//TODO
-                GetFiltersInteractor(FilterDataSource(),
-                        ThreadScheduler()),
-                SaveImageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()),
-                        SettingsDataSource(this), ThreadScheduler()))
-
-        lifecycle.addObserver(presenter)
     }
 
     override fun showFiltersPicker(filters: List<Filter>, active: Filter?) {

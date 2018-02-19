@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Camera
-import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -16,42 +15,41 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_video.*
 import me.itchallenges.collageapp.R
-import me.itchallenges.collageapp.collage.CollageDataSource
-import me.itchallenges.collageapp.common.executor.ThreadScheduler
+import me.itchallenges.collageapp.di.Injector
 import me.itchallenges.collageapp.pattern.PatternActivity
-import me.itchallenges.collageapp.settings.SettingsDataSource
+import javax.inject.Inject
 
 
 @Suppress("DEPRECATION")
 class VideoActivity : AppCompatActivity(), VideoScreenView {
     private var camera: Camera? = null
-    private lateinit var presenter: VideoScreenPresenter
+
+    @Inject
+    lateinit var presenter: VideoScreenPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
 
+        initPresenter()
+        initViews()
+    }
+
+    private fun initPresenter() {
+        Injector.INSTANCE.appComponent.inject(this)
+        presenter.view = this
+        presenter.windowManager = windowManager
+        lifecycle.addObserver(presenter)
+    }
+
+    private fun initViews() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setTitle(R.string.screen_video_title)
         supportActionBar?.setSubtitle(R.string.screen_video_subtitle)
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
         placeholder_no_access.visibility = View.GONE
-
-        presenter = VideoScreenPresenter(this,
-                PreviewCameraInteractor(ThreadScheduler()),
-                ReleaseCameraInteractor(ThreadScheduler()),
-                StartCapturingVideoInteractor(SettingsDataSource(this), ThreadScheduler()),
-                StopCapturingVideoInteractor(SettingsDataSource(this), CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(
-                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
-                ValidateFramesInteractor(SettingsDataSource(this), ThreadScheduler()),
-                windowManager,
-                MediaRecorder())
-
-        lifecycle.addObserver(presenter)
-
         start_recording.setOnClickListener { presenter.onStartRecordingClicked() }
         stop_recording.setOnClickListener { presenter.onStopRecordingClicked() }
     }

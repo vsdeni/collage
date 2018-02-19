@@ -4,11 +4,13 @@ import io.reactivex.Single
 import me.itchallenges.collageapp.common.executor.ExecutionScheduler
 import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
+import javax.inject.Inject
 
 
-class GetPatternsInteractor(private val patternsRepository: PatternRepository,
-                            private val settingsRepository: SettingsRepository,
-                            private val scheduler: ExecutionScheduler) : UseCase.RxSingle<List<Pattern>, UseCase.None>() {
+class GetPatternsInteractor
+@Inject constructor(private val patternsRepository: PatternRepository,
+                    private val settingsRepository: SettingsRepository,
+                    private val scheduler: ExecutionScheduler) : UseCase.RxSingle<List<Pattern>, UseCase.None>() {
 
     override fun build(params: None?): Single<List<Pattern>> =
             settingsRepository.getCollageImagesCount()

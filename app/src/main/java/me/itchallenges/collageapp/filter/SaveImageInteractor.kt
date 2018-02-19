@@ -9,11 +9,13 @@ import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.pattern.Pattern
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.util.*
+import javax.inject.Inject
 
 
-class SaveImageInteractor(private val collageRepository: CollageRepository,
-                          private val settingsRepository: SettingsRepository,
-                          private val executionScheduler: ExecutionScheduler) : UseCase.RxCompletable<SaveImageInteractor.Params>() {
+class SaveImageInteractor
+@Inject constructor(private val collageRepository: CollageRepository,
+                    private val settingsRepository: SettingsRepository,
+                    private val executionScheduler: ExecutionScheduler) : UseCase.RxCompletable<SaveImageInteractor.Params>() {
 
     override fun build(params: Params?): Completable {
         return collageRepository

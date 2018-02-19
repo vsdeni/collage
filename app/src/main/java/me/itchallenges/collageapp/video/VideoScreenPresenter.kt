@@ -8,16 +8,19 @@ import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.view.WindowManager
 import me.itchallenges.collageapp.R
+import javax.inject.Inject
 
 
-class VideoScreenPresenter(private val view: VideoScreenView,
-                           private val previewCameraInteractor: PreviewCameraInteractor,
-                           private val releaseCameraInteractor: ReleaseCameraInteractor,
-                           private val startCapturingVideoInteractor: StartCapturingVideoInteractor,
-                           private val stopCapturingVideoInteractor: StopCapturingVideoInteractor,
-                           private val validateFramesInteractor: ValidateFramesInteractor,
-                           private val windowManager: WindowManager,
-                           private var mediaRecorder: MediaRecorder? = null) : LifecycleObserver {
+class VideoScreenPresenter
+@Inject constructor(private val previewCameraInteractor: PreviewCameraInteractor,
+                    private val releaseCameraInteractor: ReleaseCameraInteractor,
+                    private val startCapturingVideoInteractor: StartCapturingVideoInteractor,
+                    private val stopCapturingVideoInteractor: StopCapturingVideoInteractor,
+                    private val validateFramesInteractor: ValidateFramesInteractor) : LifecycleObserver {
+
+    lateinit var view: VideoScreenView
+    lateinit var windowManager: WindowManager
+    private var mediaRecorder: MediaRecorder? = null
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun startCameraPreview() {

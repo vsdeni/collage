@@ -3,11 +3,14 @@ package me.itchallenges.collageapp.browse
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import javax.inject.Inject
 
 
-class BrowseScreenPresenter(private val view: BrowseScreenView,
-                            private val getCollageImageInteractor: GetCollageImageInteractor,
-                            private val shareCollageImageInteractor: ShareCollageImageInteractor) : LifecycleObserver {
+class BrowseScreenPresenter
+@Inject constructor(private val getCollageImageInteractor: GetCollageImageInteractor,
+                    private val shareCollageImageInteractor: ShareCollageImageInteractor) : LifecycleObserver {
+
+    lateinit var view: BrowseScreenView
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadCollage() {

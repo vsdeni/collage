@@ -15,24 +15,35 @@ import android.widget.Toast
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_pattern.*
 import me.itchallenges.collageapp.R
-import me.itchallenges.collageapp.collage.CollageDataSource
 import me.itchallenges.collageapp.collage.CollageLayout
-import me.itchallenges.collageapp.common.executor.ThreadScheduler
+import me.itchallenges.collageapp.di.Injector
 import me.itchallenges.collageapp.filter.FilterActivity
-import me.itchallenges.collageapp.settings.SettingsDataSource
+import javax.inject.Inject
 
 class PatternActivity : AppCompatActivity(), PatternScreenView {
-    private lateinit var presenter: PatternScreenPresenter
     private var patternsAdapter: PatternsAdapter? = null
+
+    @Inject
+    lateinit var presenter: PatternScreenPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pattern)
 
+        initPresenter()
+        initViews()
+    }
+
+    private fun initPresenter() {
+        Injector.INSTANCE.appComponent.inject(this)
+        presenter.view = this
+        lifecycle.addObserver(presenter)
+    }
+
+    private fun initViews() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -50,15 +61,6 @@ class PatternActivity : AppCompatActivity(), PatternScreenView {
         patterns_picker.layoutManager = layoutManager
         patterns_picker.setHasFixedSize(true)
         patterns_picker.addOnScrollListener(CenterScrollListener())
-
-        presenter = PatternScreenPresenter(this,
-                GetPatternsInteractor(PatternDataSource(this, Gson()), SettingsDataSource(this), ThreadScheduler()),
-                GetFramesInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(
-                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
-                SaveSelectedPatternInteractor(CollageDataSource(applicationContext, SettingsDataSource(this), getSharedPreferences(
-                        getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()))
-
-        lifecycle.addObserver(presenter)
     }
 
     override fun showLoader() {

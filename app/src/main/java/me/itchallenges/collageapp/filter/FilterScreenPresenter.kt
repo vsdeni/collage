@@ -3,12 +3,15 @@ package me.itchallenges.collageapp.filter
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import javax.inject.Inject
 
 
-class FilterScreenPresenter(private val view: FilterScreenView,
-                            private val getFilterCollageInteractor: GetFilterCollageInteractor,
-                            private val getFiltersInteractor: GetFiltersInteractor,
-                            private val saveFiltersInteractor: SaveImageInteractor) : LifecycleObserver {
+class FilterScreenPresenter
+@Inject constructor(private val getFilterCollageInteractor: GetFilterCollageInteractor,
+                    private val getFiltersInteractor: GetFiltersInteractor,
+                    private val saveFiltersInteractor: SaveImageInteractor) : LifecycleObserver {
+
+    lateinit var view: FilterScreenView
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadFilters() {

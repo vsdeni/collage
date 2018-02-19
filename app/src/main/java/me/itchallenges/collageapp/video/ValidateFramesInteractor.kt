@@ -6,11 +6,12 @@ import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
 import java.io.FileNotFoundException
+import javax.inject.Inject
 
 
-class ValidateFramesInteractor(
-        private val settingsRepository: SettingsRepository,
-        private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<UseCase.None>() {
+class ValidateFramesInteractor
+@Inject constructor(private val settingsRepository: SettingsRepository,
+                    private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<UseCase.None>() {
 
     override fun build(params: None?): Completable {
         return settingsRepository

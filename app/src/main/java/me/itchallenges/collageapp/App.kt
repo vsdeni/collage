@@ -2,6 +2,7 @@ package me.itchallenges.collageapp
 
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary
+import me.itchallenges.collageapp.di.Injector
 
 
 class App : Application() {
@@ -13,5 +14,7 @@ class App : Application() {
             return
         }
         LeakCanary.install(this)
+
+        Injector.initAppComponent(this.applicationContext)
     }
 }

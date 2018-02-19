@@ -3,12 +3,15 @@ package me.itchallenges.collageapp.pattern
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import javax.inject.Inject
 
 
-class PatternScreenPresenter(private val view: PatternScreenView,
-                             private val getPatternsInteractor: GetPatternsInteractor,
-                             private val getFramesInteractor: GetFramesInteractor,
-                             private val saveSelectedPatternInteractor: SaveSelectedPatternInteractor) : LifecycleObserver {
+class PatternScreenPresenter
+@Inject constructor(private val getPatternsInteractor: GetPatternsInteractor,
+                    private val getFramesInteractor: GetFramesInteractor,
+                    private val saveSelectedPatternInteractor: SaveSelectedPatternInteractor) : LifecycleObserver {
+
+    lateinit var view: PatternScreenView
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun loadPatterns() {

@@ -7,13 +7,13 @@ import me.itchallenges.collageapp.common.executor.ExecutionScheduler
 import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
+import javax.inject.Inject
 
 
 @Suppress("DEPRECATION")
-class StartCapturingVideoInteractor(
-        private val settingsRepository: SettingsRepository,
-        private val scheduler: ExecutionScheduler) :
-        UseCase.RxCompletable<StartCapturingVideoInteractor.Params>() {
+class StartCapturingVideoInteractor
+@Inject constructor(private val settingsRepository: SettingsRepository,
+                    private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<StartCapturingVideoInteractor.Params>() {
 
     override fun build(params: Params?): Completable =
             settingsRepository

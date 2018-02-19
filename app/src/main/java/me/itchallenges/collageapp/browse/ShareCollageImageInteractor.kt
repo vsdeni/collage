@@ -6,10 +6,12 @@ import io.reactivex.Single
 import me.itchallenges.collageapp.collage.CollageRepository
 import me.itchallenges.collageapp.common.executor.ExecutionScheduler
 import me.itchallenges.collageapp.common.interactor.UseCase
+import javax.inject.Inject
 
 
-class ShareCollageImageInteractor(private val collageRepository: CollageRepository,
-                                  private val executionScheduler: ExecutionScheduler) : UseCase.RxSingle<Intent, ShareCollageImageInteractor.Params>() {
+class ShareCollageImageInteractor
+@Inject constructor(private val collageRepository: CollageRepository,
+                    private val executionScheduler: ExecutionScheduler) : UseCase.RxSingle<Intent, ShareCollageImageInteractor.Params>() {
 
     override fun build(params: Params?): Single<Intent> {
         return collageRepository

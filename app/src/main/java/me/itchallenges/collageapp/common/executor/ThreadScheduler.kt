@@ -3,8 +3,10 @@ package me.itchallenges.collageapp.common.executor
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class ThreadScheduler : ExecutionScheduler {
+class ThreadScheduler
+@Inject constructor() : ExecutionScheduler {
     companion object {
         private const val HIGH_PRIORITY_THREADS = 6
         private const val LOW_PRIORITY_THREADS = 2

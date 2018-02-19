@@ -6,9 +6,11 @@ import io.reactivex.Completable
 import me.itchallenges.collageapp.common.executor.ExecutionScheduler
 import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.extentions.stopAndRelease
+import javax.inject.Inject
 
 
-class ReleaseCameraInteractor(private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<ReleaseCameraInteractor.Params>() {
+class ReleaseCameraInteractor
+@Inject constructor(private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<ReleaseCameraInteractor.Params>() {
 
     override fun build(params: Params?): Completable {
         return releaseRecorder(params!!.mediaRecorder)

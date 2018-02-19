@@ -11,10 +11,12 @@ import me.itchallenges.collageapp.common.interactor.UseCase
 import me.itchallenges.collageapp.extentions.stopAndRelease
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
+import javax.inject.Inject
 
-class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepository,
-                                   private val collageRepository: CollageRepository,
-                                   private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<StopCapturingVideoInteractor.Params>() {
+class StopCapturingVideoInteractor
+@Inject constructor(private val settingsRepository: SettingsRepository,
+                    private val collageRepository: CollageRepository,
+                    private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<StopCapturingVideoInteractor.Params>() {
 
     override fun build(params: Params?): Completable =
             releaseRecorder(params!!.mediaRecorder)

@@ -8,39 +8,41 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.google.gson.Gson
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_browse.*
 import me.itchallenges.collageapp.R
-import me.itchallenges.collageapp.collage.CollageDataSource
-import me.itchallenges.collageapp.common.executor.ThreadScheduler
-import me.itchallenges.collageapp.settings.SettingsDataSource
+import me.itchallenges.collageapp.di.Injector
 import me.itchallenges.collageapp.video.VideoActivity
+import javax.inject.Inject
 
 
 class BrowseActivity : AppCompatActivity(), BrowseScreenView {
-    private lateinit var presenter: BrowseScreenPresenter
+
+    @Inject
+    lateinit var presenter: BrowseScreenPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse)
 
+        initPresenter()
+        initViews()
+    }
+
+    private fun initPresenter() {
+        Injector.INSTANCE.appComponent.inject(this)
+        presenter.view = this
+        lifecycle.addObserver(presenter)
+    }
+
+    private fun initViews() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setTitle(R.string.screen_browse_title)
         supportActionBar?.setSubtitle(R.string.screen_browse_subtitle)
-
-        presenter = BrowseScreenPresenter(this,
-                GetCollageImageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this)
-                        , getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()),
-                ShareCollageImageInteractor(CollageDataSource(applicationContext, SettingsDataSource(this)
-                        , getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE), Gson()), ThreadScheduler()))
-
         share.setOnClickListener({ presenter.onShareClicked() })
-
-        lifecycle.addObserver(presenter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -6,9 +6,11 @@ import android.view.WindowManager
 import io.reactivex.Single
 import me.itchallenges.collageapp.common.executor.ExecutionScheduler
 import me.itchallenges.collageapp.common.interactor.UseCase
+import javax.inject.Inject
 
 @Suppress("DEPRECATION")
-class PreviewCameraInteractor(private val scheduler: ExecutionScheduler) : UseCase.RxSingle<Camera, PreviewCameraInteractor.Params>() {
+class PreviewCameraInteractor
+@Inject constructor(private val scheduler: ExecutionScheduler) : UseCase.RxSingle<Camera, PreviewCameraInteractor.Params>() {
 
     override fun build(params: Params?): Single<Camera> {
         return Single.fromCallable({

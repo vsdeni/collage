@@ -4,10 +4,12 @@ import io.reactivex.Single
 import me.itchallenges.collageapp.collage.CollageRepository
 import me.itchallenges.collageapp.common.executor.ExecutionScheduler
 import me.itchallenges.collageapp.common.interactor.UseCase
+import javax.inject.Inject
 
 
-class GetFilterCollageInteractor(private val collageRepository: CollageRepository,
-                                 private val scheduler: ExecutionScheduler) : UseCase.RxSingle<CollageFilterViewModel, UseCase.None>() {
+class GetFilterCollageInteractor
+@Inject constructor(private val collageRepository: CollageRepository,
+                    private val scheduler: ExecutionScheduler) : UseCase.RxSingle<CollageFilterViewModel, UseCase.None>() {
 
     override fun build(params: None?): Single<CollageFilterViewModel> {
         return collageRepository
