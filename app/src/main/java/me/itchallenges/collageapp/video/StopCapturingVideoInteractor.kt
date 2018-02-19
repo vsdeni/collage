@@ -8,6 +8,7 @@ import io.reactivex.Observable
 import me.itchallenges.collageapp.collage.CollageRepository
 import me.itchallenges.collageapp.common.executor.ExecutionScheduler
 import me.itchallenges.collageapp.common.interactor.UseCase
+import me.itchallenges.collageapp.extentions.stopAndRelease
 import me.itchallenges.collageapp.settings.SettingsRepository
 import java.io.File
 
@@ -16,7 +17,7 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
                                    private val scheduler: ExecutionScheduler) : UseCase.RxCompletable<StopCapturingVideoInteractor.Params>() {
 
     override fun build(params: Params?): Completable =
-            releaseCamera(params!!.mediaRecorder)
+            releaseRecorder(params!!.mediaRecorder)
                     .andThen(
                             settingsRepository
                                     .getFileToSaveVideo()
@@ -31,11 +32,9 @@ class StopCapturingVideoInteractor(private val settingsRepository: SettingsRepos
                     .compose(scheduler.highPriorityCompletable())
 
 
-    private fun releaseCamera(recorder: MediaRecorder): Completable {
+    private fun releaseRecorder(recorder: MediaRecorder): Completable {
         return Completable.fromCallable({
-            recorder.stop()
-            recorder.reset()
-            recorder.release()
+            recorder.stopAndRelease()
         })
     }
 

@@ -39,11 +39,12 @@ class VideoScreenPresenter(private val view: VideoScreenView,
     fun stopCameraPreview() {
         releaseCameraInteractor
                 .execute({
+                    mediaRecorder = null
                     view.stopCameraPreview()
                 }, {
                     view.stopCameraPreview()
                     it.printStackTrace()
-                }, ReleaseCameraInteractor.Params(view.getPreviewCamera()))
+                }, ReleaseCameraInteractor.Params(view.getPreviewCamera(), mediaRecorder))
     }
 
     fun onStartRecordingClicked() {
